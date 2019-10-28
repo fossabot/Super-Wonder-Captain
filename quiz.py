@@ -1,3 +1,3 @@
-print("Welkom bij de Marvel Quizz!")
-weqw
-hguyfubdsj
+from tkinter import *
+
+root = Tk()
