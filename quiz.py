@@ -45,13 +45,13 @@ def guiData():
 
 # Tkinter GUI
 root = Tk()
+# Main frame settings
+root.resizable(width=False, height=False)
+root.geometry('{}x{}'.format(1280, 700))
 
-canvas = Frame(root, width=700, height=700)
-welcomeMessage = Label(root, text="Welkom bij de Marvel Quiz!")
 nameLabel = Label(root, text="Naam:")
 nameEntry = Entry(root)
 
-canvas.pack()
 nameLabel.grid(row=0, sticky=E)
 nameEntry.grid(row=0, column=1)
 
