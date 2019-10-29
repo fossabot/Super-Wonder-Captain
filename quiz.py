@@ -20,7 +20,7 @@ def selectCharacter():
 	'selecteert een character die een beschrijving heeft'
 	while True:
 		randomNumber=random.randint(0,1400)
-		characters=sendMarvelRequest(f'characters?offset={randomNumber}')
+		characters=sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 		for character in characters:
 			if len(character['description'])>0:
 				return character,characters
@@ -40,8 +40,7 @@ def guiData():
 	names=selectNames(characters,name)
 	description=character['description'].replace(name,'<naam>')
 	return names,description,name
-#print(guiData())
-
+print(guiData())
 
 # Tkinter GUI
 root = Tk()
