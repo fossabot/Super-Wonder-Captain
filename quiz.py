@@ -8,9 +8,9 @@ private='c1e103dcdbd9d9c0bec980663077e52b346317e2'
 
 
 class Window(Frame):
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.master = master
+	def __init__(self, master=None):
+		Frame.__init__(self, master)
+		self.master = master
 
 
 root = Tk()
