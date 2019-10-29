@@ -60,26 +60,37 @@ def init_buffer():
 
 init_buffer()
 time.sleep(5)
-print(get_new_character(),characterBuffer)
+print(get_new_character(), characterBuffer)
 
 # Tkinter GUI
 root = Tk()
+
 # Main frame settings
 root.resizable(width=False, height=False)
 root.geometry('1280x720')
 
 leftFrame = Frame(root)
 leftFrame.pack(side=TOP, anchor=NW, padx=(30, 0), pady=(30, 0))
+
 marvelLogo = PhotoImage(file="marvel-logo.png")
 marvelLogoLabel = Label(leftFrame, image=marvelLogo)
-nameLabel = Label(leftFrame, text="Naam:")
-nameEntry = Entry(leftFrame)
-startButton = Button(leftFrame, text="Start", width=20)
-leaderBoardButton = Button(leftFrame, text="Leaderboard", width=20)
 
+nameLabel = Label(leftFrame, text="Naam:")
+nameLabel.config(font=("Quicksand", 12))
+
+nameEntry = Entry(leftFrame)
+nameEntry.config(font=("Quicksand", 12))
+
+startButton = Button(leftFrame, text="Start", width=15)
+startButton.config(font=("Quicksand", 10))
+
+leaderBoardButton = Button(leftFrame, text="Leaderboard", width=15)
+leaderBoardButton.config(font=("Quicksand", 10))
+
+# Grid config / layout
 marvelLogoLabel.grid(row=0, column=0, columnspan=2)
 nameLabel.grid(row=1, column=0, sticky=W, pady=(150, 40))
-nameEntry.grid(row=1, column=0, pady=(150, 40))
+nameEntry.grid(row=1, column=0, padx=(35, 0), pady=(150, 40))
 startButton.grid(row=2, columnspan=2, sticky=W, pady=(20, 10))
 leaderBoardButton.grid(row=3, columnspan=2, sticky=W)
 
