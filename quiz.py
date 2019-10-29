@@ -40,7 +40,7 @@ def selectNames(characters,exclude):
 		character=random.choice(characters)
 		if character['name'] not in names:
 			names.append(character['name'])
-	return names
+	return random.shuffle(names)
 
 def guiData():
 	character,characters=selectCharacter()
@@ -65,7 +65,7 @@ def init_buffer():
 	start_buffer_thread()
 
 init_buffer()
-time.sleep(5)
+#time.sleep(5)
 print(get_new_character(), characterBuffer)
 def displayCharacter():
 	character=get_new_character()
