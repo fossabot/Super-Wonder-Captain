@@ -63,6 +63,7 @@ def get_new_character():
 def init_buffer():
 	start_buffer_thread()
 	start_buffer_thread()
+	time.sleep(2)
 
 init_buffer()
 #time.sleep(5)
