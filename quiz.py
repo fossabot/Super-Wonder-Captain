@@ -4,7 +4,8 @@ import time
 from tkinter import *
 import json
 import random
-
+import threading
+characterBuffer=[]
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
 	loginInfo=json.load(open('apikey.json','r'))
@@ -28,7 +29,7 @@ def selectCharacter():
 def selectNames(characters,exclude):
 	'selecteert de namen die gebruikt worden bij multiplechoice'
 	names=[exclude]
-	while len(names)<4:
+	while len(names)<10:
 		character=random.choice(characters)
 		if character['name'] not in names:
 			names.append(character['name'])
@@ -39,8 +40,25 @@ def guiData():
 	name=character['name']
 	names=selectNames(characters,name)
 	description=character['description'].replace(name,'<naam>')
-	return names,description,name
-print(guiData())
+	return {'names':names,'description':description,'name':name}
+#print(guiData())
+def buffer_character():
+	characterBuffer.append(guiData())
+def start_buffer_thread():
+	api_thread = threading.Thread(target=buffer_character)
+	api_thread.start()
+
+def get_new_character():
+	start_buffer_thread()
+	return characterBuffer.pop()
+
+def init_buffer():
+	start_buffer_thread()
+	start_buffer_thread()
+
+#init_buffer()
+#time.sleep(5)
+#print(get_new_character(),characterBuffer)
 
 # Tkinter GUI
 root = Tk()
@@ -53,7 +71,5 @@ nameEntry = Entry(root)
 
 nameLabel.grid(row=0, sticky=E)
 nameEntry.grid(row=0, column=1)
-
-
 
 root.mainloop()
