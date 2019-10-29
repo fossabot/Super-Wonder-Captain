@@ -33,15 +33,15 @@ def selectNames(characters,exclude):
 		if character['name'] not in names:
 			names.append(character['name'])
 	return names
-		
-#print(json.dumps(sendMarvelRequest('characters'), sort_keys=True,indent=4, separators=(',', ': ')))
-character,characters=selectCharacter()
-name=character['name']
-names=selectNames(characters,name)
-description=character['description'].replace(name,'<naam>')
-print('keuzes:',names)
-print('beschrijving:',description)
-print('antwoord:',name)
+
+def guiData():
+	character,characters=selectCharacter()
+	name=character['name']
+	names=selectNames(characters,name)
+	description=character['description'].replace(name,'<naam>')
+	return names,description,name
+#print(guiData())
+
 
 # Tkinter GUI
 root = Tk()
