@@ -17,13 +17,16 @@ def sendMarvelRequest(request):
 	return json.loads(httprequest.text)['data']['results']
 
 def selectCharacter():
+	'selecteert een character die een beschrijving heeft'
 	while True:
 		randomNumber=random.randint(0,1400)
 		characters=sendMarvelRequest(f'characters?offset={randomNumber}')
 		for character in characters:
 			if len(character['description'])>0:
 				return character,characters
+
 def selectNames(characters,exclude):
+	'selecteert de namen die gebruikt worden bij multiplechoice'
 	names=[exclude]
 	while len(names)<4:
 		character=random.choice(characters)
@@ -36,6 +39,6 @@ character,characters=selectCharacter()
 name=character['name']
 names=selectNames(characters,name)
 description=character['description'].replace(name,'<naam>')
-print(names)
-print(description)
-print(name)
+print('keuzes:',names)
+print('beschrijving:',description)
+print('antwoord:',name)
