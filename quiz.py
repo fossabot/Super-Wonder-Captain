@@ -94,25 +94,25 @@ background_image = PhotoImage(file="marvel-login-screen.png")
 background_label = Label(root, image=background_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-leftMiddleFrame = Frame(root)
+leftMiddleFrame = Frame(root, bg="#fff")
 leftMiddleFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 
-nameLabel = Label(leftMiddleFrame, text="Naam:")
+nameLabel = Label(leftMiddleFrame, text="Naam:", bg="#fff")
 nameLabel.config(font=("Quicksand", 12))
 
-nameEntry = Entry(leftMiddleFrame)
+nameEntry = Entry(leftMiddleFrame, bg="#fafafa", relief="groove", bd="2")
 nameEntry.config(font=("Quicksand", 12))
 
-startButton = Button(leftMiddleFrame, text="Start", width=15)
-startButton.config(font=("Quicksand", 10))
+startButton = Button(leftMiddleFrame, text="START", width=15)
+startButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
-leaderBoardButton = Button(leftMiddleFrame, text="Leaderboard", width=15)
-leaderBoardButton.config(font=("Quicksand", 10))
+leaderBoardButton = Button(leftMiddleFrame, text="LEADERBOARD", width=15)
+leaderBoardButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 # Grid config / layout
-nameLabel.grid(row=1, column=0)
-nameEntry.grid(row=1, column=1)
-startButton.grid(row=2, column=0)
-leaderBoardButton.grid(row=3)
+nameLabel.grid(row=1, column=0, sticky=W)
+nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
+startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
+leaderBoardButton.grid(row=3, column=0, sticky=W, columnspan=2, ipadx=10, ipady=2)
 
 root.mainloop()
