@@ -8,7 +8,6 @@ import threading
 import re
 import sqlite3
 import math
-import tk
 
 connection=sqlite3.connect('quiz.db')
 cursor = connection.cursor()
@@ -96,7 +95,7 @@ background_label = Label(root, image=background_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 leftMiddleFrame = Frame(root)
-leftMiddleFrame.pack(side=LEFT, anchor=W, padx=(0, 0), pady=(0, 0))
+leftMiddleFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 
 nameLabel = Label(leftMiddleFrame, text="Naam:")
 nameLabel.config(font=("Quicksand", 12))
