@@ -42,3 +42,19 @@ description=character['description'].replace(name,'<naam>')
 print('keuzes:',names)
 print('beschrijving:',description)
 print('antwoord:',name)
+
+# Tkinter GUI
+root = Tk()
+
+canvas = Frame(root, width=700, height=700)
+welcomeMessage = Label(root, text="Welkom bij de Marvel Quiz!")
+nameLabel = Label(root, text="Naam:")
+nameEntry = Entry(root)
+
+canvas.pack()
+nameLabel.grid(row=0, sticky=E)
+nameEntry.grid(row=0, column=1)
+
+
+
+root.mainloop()
