@@ -5,6 +5,7 @@ from tkinter import *
 import json
 import random
 import threading
+import re
 characterBuffer=[]
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
@@ -39,7 +40,8 @@ def guiData():
 	character,characters=selectCharacter()
 	name=character['name']
 	names=selectNames(characters,name)
-	description=character['description'].replace(name,'<naam>')
+	replace_regex = re.compile(re.escape(name), re.IGNORECASE)#zoeken zonder op hoofdletters te letten.
+	description=replace_regex.sub('<naam>', character['description'])
 	return {'names':names,'description':description,'name':name}
 #print(guiData())
 def buffer_character():
@@ -56,9 +58,9 @@ def init_buffer():
 	start_buffer_thread()
 	start_buffer_thread()
 
-#init_buffer()
-#time.sleep(5)
-#print(get_new_character(),characterBuffer)
+init_buffer()
+time.sleep(5)
+print(get_new_character(),characterBuffer)
 
 # Tkinter GUI
 root = Tk()
