@@ -40,7 +40,8 @@ def selectNames(characters,exclude):
 		character=random.choice(characters)
 		if character['name'] not in names:
 			names.append(character['name'])
-	return random.shuffle(names)
+	random.shuffle(names)
+	return names
 
 def guiData():
 	character,characters=selectCharacter()
