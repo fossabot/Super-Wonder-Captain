@@ -49,7 +49,12 @@ def guiData():
 	names=selectNames(characters,name)
 	replace_regex = re.compile(re.escape(name), re.IGNORECASE)#zoeken zonder op hoofdletters te letten.
 	description=replace_regex.sub('<naam>', character['description'])
-	return {'names':names,'description':description,'name':name}
+	comics=character['comics']['items']
+	random.shuffle(comics)
+	comicsNames=[]
+	for comic in comics:
+		comicsNames.append(comic['name'])
+	return {'names':names,'description':description,'name':name,'comics':comicsNames}
 #print(guiData())
 def buffer_character():
 	characterBuffer.append(guiData())
@@ -68,7 +73,7 @@ def init_buffer():
 
 init_buffer()
 #time.sleep(5)
-print(get_new_character(), characterBuffer)
+print(json.dumps(get_new_character(), indent=4, sort_keys=True), json.dumps(characterBuffer, indent=4, sort_keys=True))
 def displayCharacter():
 	character=get_new_character()
 
@@ -84,7 +89,7 @@ def highscores():
 #print(highscores())
 #init_buffer()
 #time.sleep(3)
-
+#print(json.dumps(sendMarvelRequest('comics/21366?'), indent=4, sort_keys=True))
 
 # Tkinter GUI
 root = Tk()
