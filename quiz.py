@@ -15,12 +15,4 @@ def sendMarvelRequest(request):
 	return json.loads(httprequest.text)['data']['results']
 #print(sendMarvelRequest('characters'))
 
-class Window(Frame):
-	def __init__(self, master=None):
-		Frame.__init__(self, master)
-		self.master = master
-
-
-root = Tk()
-app = Window(root)
-root.mainloop()
+print(sendMarvelRequest('characters'))
