@@ -46,7 +46,7 @@ print(guiData())
 root = Tk()
 # Main frame settings
 root.resizable(width=False, height=False)
-root.geometry('{}x{}'.format(1280, 700))
+root.geometry('1280x720')
 
 nameLabel = Label(root, text="Naam:")
 nameEntry = Entry(root)
