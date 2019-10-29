@@ -6,6 +6,11 @@ import json
 import random
 import threading
 import re
+import sqlite3
+import math
+connection=sqlite3.connect('quiz.db')
+cursor = connection.cursor()
+cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
 characterBuffer=[]
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
@@ -61,6 +66,22 @@ def init_buffer():
 init_buffer()
 time.sleep(5)
 print(get_new_character(), characterBuffer)
+def displayCharacter():
+	character=get_new_character()
+
+def einde_spel(naam,score):
+	timestamp=math.floor(time.time())
+	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam,timestamp,score))
+	connection.commit()
+
+def highscores():
+	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
+	data=cursor.fetchall()
+	return data
+#print(highscores())
+#init_buffer()
+#time.sleep(3)
+
 
 # Tkinter GUI
 root = Tk()
