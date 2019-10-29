@@ -3,9 +3,17 @@ import hashlib
 import time
 from tkinter import *
 import json
-public='05e07ce2914b79046f157b3f7eee36b3'
-private='c1e103dcdbd9d9c0bec980663077e52b346317e2'
 
+def sendMarvelRequest(request):
+	loginInfo=json.load(open('apikey.json','r'))
+	stamp=str(time.time())
+	pubkey=loginInfo['pubkey']
+	privatekey=loginInfo['privatekey']
+	hashString=stamp+privatekey+pubkey
+	hash=hashlib.md5(hashString.encode()).hexdigest()
+	httprequest=requests.get(f'http://gateway.marvel.com/v1/public/{request}?ts={stamp}&apikey={pubkey}&hash={hash}')
+	return json.loads(httprequest.text)['data']['results']
+#print(sendMarvelRequest('characters'))
 
 class Window(Frame):
 	def __init__(self, master=None):
