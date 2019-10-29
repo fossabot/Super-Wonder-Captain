@@ -10,7 +10,7 @@ import sqlite3
 import math
 connection=sqlite3.connect('quiz.db')
 cursor = connection.cursor()
-cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(2));')
+cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
 characterBuffer=[]
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
@@ -72,10 +72,10 @@ def einde_spel(naam,score):
 	connection.commit()
 	
 def highscores():
-	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10')
+	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
 	data=cursor.fetchall()
 	return data
-print(highscores())
+#print(highscores())
 #init_buffer()
 #time.sleep(3)
 
