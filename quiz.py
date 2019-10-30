@@ -139,6 +139,10 @@ startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=1
 leaderBoardButton.grid(row=3, column=0, sticky=W, columnspan=2, ipadx=10, ipady=2)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
+gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
+gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
+gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
