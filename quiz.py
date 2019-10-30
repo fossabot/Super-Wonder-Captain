@@ -95,6 +95,9 @@ def highscores():
 def switchToGame():
 	mainMenu.pack_forget()
 	gameFrame.pack(expand=True, fill="both")
+	background_image = PhotoImage(file="marvel-quiz-background.png")
+	background_label = Label(mainMenu, image=background_image)
+	background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 def switchToMenu():
 	gameFrame.pack_forget()
@@ -135,8 +138,8 @@ nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
 startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
 leaderBoardButton.grid(row=3, column=0, sticky=W, columnspan=2, ipadx=10, ipady=2)
 
-gameFrame=Frame(window,height=800,width=1280, bg="#fff")
-menuButton=Button(gameFrame, text="MENU", command=switchToMenu)
+gameFrame = Frame(window, height=800, width=1280, bg="#fff")
+menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
 buttons=[]
