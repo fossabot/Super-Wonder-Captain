@@ -100,6 +100,9 @@ def switchToMenu():
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
+def buttonClicked(id):
+	print(id)
+
 window = Tk()
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
@@ -136,6 +139,12 @@ gameFrame=Frame(window,height=800,width=1280, bg="#fff")
 menuButton=Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
-
+buttons=[]
+for i in range(10):
+	actionButton=Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x))
+	actionButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+	actionButton.grid(row=i, column=0, sticky=W, pady=(10, 10), columnspan=2, ipadx=10, ipady=2)
+	buttons.append(actionButton)
+buttons[0].config(text="abc")
 switchToMenu()
 window.mainloop()
