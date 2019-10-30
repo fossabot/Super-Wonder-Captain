@@ -95,32 +95,35 @@ def highscores():
 def switchToGame():
 	mainMenu.pack_forget()
 	gameFrame.pack(expand=True, fill="both")
+
 def switchToMenu():
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
-root = Tk()
-root.title("Marvel Quiz")
-mainMenu=Frame(root,height=800,width=1280)
+
+window = Tk()
+window.title("Marvel Quiz")
+mainMenu = Frame(window, height=800, width=1280)
+
 # Main frame settings
-root.resizable(width=False, height=False)
-root.geometry('1280x800')
+window.resizable(width=False, height=False)
+window.geometry('1280x800')
 background_image = PhotoImage(file="marvel-login-screen.png")
 background_label = Label(mainMenu, image=background_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-leftMiddleFrame = Frame(mainMenu, bg="#fff")
-leftMiddleFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
+startFrame = Frame(mainMenu, bg="#fff")
+startFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 
-nameLabel = Label(leftMiddleFrame, text="Naam:", bg="#fff")
+nameLabel = Label(startFrame, text="Naam:", bg="#fff")
 nameLabel.config(font=("Quicksand", 12))
 
-nameEntry = Entry(leftMiddleFrame, bg="#fafafa", relief="groove", bd="2")
+nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
 nameEntry.config(font=("Quicksand", 12))
 
-startButton = Button(leftMiddleFrame, text="START", width=15, command=switchToGame)
+startButton = Button(startFrame, text="START", width=15, command=switchToGame)
 startButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
-leaderBoardButton = Button(leftMiddleFrame, text="LEADERBOARD", width=15)
+leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
 leaderBoardButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 # Grid config / layout
@@ -129,9 +132,9 @@ nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
 startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
 leaderBoardButton.grid(row=3, column=0, sticky=W, columnspan=2, ipadx=10, ipady=2)
 
-gameFrame=Frame(root,height=800,width=1280)
-startButton = Button(leftMiddleFrame, text="MENU", width=15, command=switchToMenu)
-startButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+gameFrame = Frame(window, height=800, width=1280)
+backToMenuButton = Button(startFrame, text="MENU", width=15, command=switchToMenu)
+backToMenuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 switchToMenu()
-root.mainloop()
+window.mainloop()
