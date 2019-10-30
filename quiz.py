@@ -8,7 +8,8 @@ import threading
 import re
 import sqlite3
 import math
-
+current_question=None
+score=0
 connection=sqlite3.connect('quiz.db')
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
@@ -59,8 +60,7 @@ def guiData():
 def buffer_character():
 	characterBuffer.append(guiData())
 def start_buffer_thread():
-	api_thread = threading.Thread(target=buffer_character)
-	api_thread.start()
+	threading.Thread(target=buffer_character).start()
 
 def get_new_character():
 	start_buffer_thread()
@@ -75,9 +75,10 @@ def init_buffer():
 #time.sleep(5)
 #print(json.dumps(get_new_character(), indent=4, sort_keys=True), json.dumps(characterBuffer, indent=4, sort_keys=True))
 def displayCharacter():
-	character=get_new_character()
+	global current_character
+	current_character=get_new_character()
 	for id in range(len(buttons)):
-		buttons[id].config(text=character['names'][id])
+		buttons[id].config(text=current_character['names'][id],bg="#202020")
 	#description.config(text=character['description']
 
 def einde_spel(naam,score):
@@ -95,24 +96,51 @@ init_buffer()
 #print(json.dumps(sendMarvelRequest('comics/21366?'), indent=4, sort_keys=True))
 
 # Tkinter GUI
-def switchToGame():
+def newGame():
+	global score
+	score=10#met elke vraag komt er 10 bij, dus dit zou goed moeten zijn.
 	mainMenu.pack_forget()
 	gameFrame.pack(expand=True, fill="both")
-	displayCharacter()
+	nextQuestion()
 
 def switchToMenu():
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
+def displayScore():
+	scoreLabel.config(text=score)
+
+def nieuwe_vraag_delay():
+	time.sleep(1)
+	nextQuestion()
+
 def buttonClicked(id):
+	global score
 	print(id)
+	nameClicked=current_character['names'][id]
+	print(nameClicked)
+	correct=current_character['name']
+	print(correct)
+	if correct==nameClicked:
+		buttons[id].config(bg="#00FF00")
+		print("correct")
+		threading.Thread(target=nieuwe_vraag_delay).start()
+		
+	else:
+		buttons[id].config(bg="#FF0000")
+		score-=5
+	displayScore()
 
 def nextQuestion():
+	global score
+	score+=15
 	displayCharacter()
+	displayScore()
 
 window = Tk()
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
+#mainMenu = Frame(window, height=768, width=1280)
 
 # Main frame settings
 window.resizable(width=False, height=False)
@@ -130,7 +158,7 @@ nameLabel.config(font=("Quicksand", 12))
 nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
 nameEntry.config(font=("Quicksand", 12))
 
-startButton = Button(startFrame, text="START", width=15, command=switchToGame)
+startButton = Button(startFrame, text="START", width=15, command=newGame)
 startButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
@@ -153,12 +181,14 @@ menuButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10
 buttons=[]
 for i in range(10):
 	actionButton=Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x))
-	actionButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+	actionButton.config(font=("Quicksand", 10, "bold"), fg="#fff", bd="0")
 	actionButton.grid(row=i, column=0, sticky=W, pady=(10, 10), columnspan=2, ipadx=10, ipady=2)
 	buttons.append(actionButton)
 
 description=Label(gameFrame,text="<DESC>")
 description.place(relx=0.5, rely=0.1, anchor=CENTER)
+scoreLabel=Label(gameFrame,text="<SCORE>")
+scoreLabel.place(relx=0, rely=0.9, anchor=W)
 switchToMenu()
 window.mainloop()
 
