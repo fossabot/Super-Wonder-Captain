@@ -158,3 +158,8 @@ for i in range(10):
 buttons[0].config(text="abc")
 switchToMenu()
 window.mainloop()
+
+def Christoffer_random_shit():
+	print()
+
+Christoffer_random_shit()
