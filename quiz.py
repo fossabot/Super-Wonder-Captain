@@ -78,7 +78,7 @@ def displayCharacter():
 	character=get_new_character()
 	for id in range(len(buttons)):
 		buttons[id].config(text=character['names'][id])
-	description.config(text=character['description']
+	#description.config(text=character['description']
 
 def einde_spel(naam,score):
 	timestamp=math.floor(time.time())
@@ -156,7 +156,7 @@ for i in range(10):
 	actionButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 	actionButton.grid(row=i, column=0, sticky=W, pady=(10, 10), columnspan=2, ipadx=10, ipady=2)
 	buttons.append(actionButton)
-buttons[0].config(text="abc")
+
 description=Label(gameFrame,text="<DESC>")
 description.place(relx=0.5, rely=0.1, anchor=CENTER)
 switchToMenu()
