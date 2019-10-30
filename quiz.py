@@ -76,6 +76,8 @@ def init_buffer():
 #print(json.dumps(get_new_character(), indent=4, sort_keys=True), json.dumps(characterBuffer, indent=4, sort_keys=True))
 def displayCharacter():
 	character=get_new_character()
+	for id in range(len(buttons)):
+		buttons[id].config(text=character['names'][id])
 
 def einde_spel(naam,score):
 	timestamp=math.floor(time.time())
@@ -87,7 +89,7 @@ def highscores():
 	data=cursor.fetchall()
 	return data
 #print(highscores())
-#init_buffer()
+init_buffer()
 #time.sleep(3)
 #print(json.dumps(sendMarvelRequest('comics/21366?'), indent=4, sort_keys=True))
 
@@ -95,9 +97,7 @@ def highscores():
 def switchToGame():
 	mainMenu.pack_forget()
 	gameFrame.pack(expand=True, fill="both")
-	background_image = PhotoImage(file="marvel-quiz-background.png")
-	background_label = Label(mainMenu, image=background_image)
-	background_label.place(x=0, y=0, relwidth=1, relheight=1)
+	displayCharacter()
 
 def switchToMenu():
 	gameFrame.pack_forget()
@@ -105,6 +105,9 @@ def switchToMenu():
 
 def buttonClicked(id):
 	print(id)
+
+def nextQuestion():
+	displayCharacter()
 
 window = Tk()
 window.title("Marvel Quiz")
