@@ -100,16 +100,10 @@ def switchToMenu():
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
-<<<<<<< HEAD
-root = Tk()
-root.title("Marvel Quiz")
-mainMenu=Frame(root,height=800,width=1280)
-=======
 window = Tk()
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
 
->>>>>>> b27de2bb3eca57502913ddc50dda10a83d585823
 # Main frame settings
 window.resizable(width=False, height=False)
 window.geometry('1280x800')
@@ -138,7 +132,7 @@ nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
 startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
 leaderBoardButton.grid(row=3, column=0, sticky=W, columnspan=2, ipadx=10, ipady=2)
 
-gameFrame=Frame(root,height=800,width=1280, bg="#fff")
+gameFrame=Frame(window,height=800,width=1280, bg="#fff")
 menuButton=Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
