@@ -10,6 +10,7 @@ import sqlite3
 import math
 current_question=None
 score=0
+vragen_gesteld=0
 connection=sqlite3.connect('quiz.db')
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
@@ -81,7 +82,7 @@ def displayCharacter():
 		buttons[id].config(text=current_character['names'][id],bg="#202020")
 	#description.config(text=character['description']
 
-def einde_spel(naam,score):
+def saveScores(naam,score):
 	timestamp=math.floor(time.time())
 	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam,timestamp,score))
 	connection.commit()
@@ -98,6 +99,8 @@ init_buffer()
 # Tkinter GUI
 def newGame():
 	global score
+	global vragen_gesteld
+	vragen_gesteld=0
 	score=10#met elke vraag komt er 10 bij, dus dit zou goed moeten zijn.
 	mainMenu.pack_forget()
 	gameFrame.pack(expand=True, fill="both")
@@ -112,7 +115,11 @@ def displayScore():
 
 def nieuwe_vraag_delay():
 	time.sleep(1)
-	nextQuestion()
+	if(vragen_gesteld==10):
+		einde_spel()#TODO
+	else:
+		nextQuestion()
+	
 
 def buttonClicked(id):
 	global score
@@ -133,6 +140,8 @@ def buttonClicked(id):
 
 def nextQuestion():
 	global score
+	global vragen_gesteld
+	vragen_gesteld+=1
 	score+=15
 	displayCharacter()
 	displayScore()
@@ -189,6 +198,7 @@ description=Label(gameFrame,text="<DESC>")
 description.place(relx=0.5, rely=0.1, anchor=CENTER)
 scoreLabel=Label(gameFrame,text="<SCORE>")
 scoreLabel.place(relx=0, rely=0.9, anchor=W)
+
 switchToMenu()
 window.mainloop()
 
