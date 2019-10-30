@@ -161,3 +161,8 @@ description=Label(gameFrame,text="<DESC>")
 description.place(relx=0.5, rely=0.1, anchor=CENTER)
 switchToMenu()
 window.mainloop()
+
+def Christoffer_random_shit():
+	print()
+
+Christoffer_random_shit()
