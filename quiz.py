@@ -93,6 +93,7 @@ def highscores():
 
 # Tkinter GUI
 root = Tk()
+root.title("Marvel Quiz")
 
 # Main frame settings
 root.resizable(width=False, height=False)
