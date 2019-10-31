@@ -9,10 +9,10 @@ import re
 import sqlite3
 import math
 import pyglet
-#from PIL import Image
-
-# tatras = Image.open("http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_incredible.jpg")
-# tatras.show()
+import urllib.request
+import urllib.parse
+from PIL import Image, ImageTk
+import io
 
 window = Tk()
 #window.iconbitmap(r'marvelicon.bmp')
@@ -42,12 +42,18 @@ def sendMarvelRequest(request):
 	httprequest = requests.get(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}')
 	return json.loads(httprequest.text)['data']['results']
 
-
 def selectCharacter():
 	'selecteert een willekeurig character die een beschrijving heeft'
 	while True:
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
+
+		url = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_incredible.jpg"
+		raw_data = urllib.request.urlopen(url).read()
+		img = Image.open(io.BytesIO(raw_data))
+		image = ImageTk.PhotoImage(img)
+		imageLabel = Label(gameFrame, image=image)
+		imageLabel.place(rely=0.30, relx=0.60)
 		for character in characters:
 			if len(character['description']) > 0:
 				return character, characters
