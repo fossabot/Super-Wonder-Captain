@@ -11,6 +11,7 @@ import math
 import pyglet
 window=Tk()
 
+
 window.iconbitmap(r'marvelicon.ico')
 pyglet.font.add_file('changa.ttf')
 action_man = pyglet.font.load('Changa')
