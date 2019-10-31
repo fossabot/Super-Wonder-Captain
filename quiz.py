@@ -186,6 +186,10 @@ def nextQuestion():
     score += 15
     displayCharacter()
     displayScore()
+    displayAantalvragen()
+
+def displayAantalvragen():
+    aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
 
 
 window.title("Marvel Quiz")
@@ -251,10 +255,16 @@ for i in range(10):
     actionButton.grid(row=i, pady=(5, 5))
     buttons.append(actionButton)
 
+
 description = Label(gameFrame, text="<DESC>")
 description.place(relx=0.15, rely=0.1, anchor=CENTER)
+description.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+aantalvragen = Label(gameFrame, text="<VRAGEN>")
+aantalvragen.place(relx=0.5, rely=0.9, anchor=CENTER)
+aantalvragen.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 scoreLabel = Label(gameFrame, text="<SCORE>")
-scoreLabel.place(relx=0, rely=0.9, anchor=W)
+scoreLabel.place(relx=0.02, rely=0.9, anchor=W)
+scoreLabel.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 
 initBuffer()
 switchToMenu()
