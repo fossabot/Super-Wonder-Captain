@@ -107,6 +107,7 @@ def displayCharacter():
 	currentQuestion = nextQuestionData()
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
+		buttons[id].config(state='normal')
 
 # TODO: afbeelding weergeven
 
@@ -135,7 +136,6 @@ def newGame():
 	gameFrame.pack(expand=True, fill="both")
 	nextQuestion()
 
-
 def newGame2():
 	'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
 	global score
@@ -145,7 +145,6 @@ def newGame2():
 	introFrame.pack_forget()
 	gameFrame.pack(expand=True, fill="both")
 	nextQuestion()
-
 
 def switchToIntro():
 	global user
@@ -159,17 +158,14 @@ def switchToIntro():
 	Succes!''')
 	introLabel.config(font="Changa")
 
-
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
-
 def switchToMenu2():
 	introFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
-
 
 def displayScore():
 	'update de score op het scherm.'
@@ -192,8 +188,11 @@ def buttonClicked(id):
 	correct = currentQuestion['name']
 	if correct == nameClicked:
 		buttons[id].config(bg="#00FF00")
+		for buttonId in range(len(buttons)):
+			buttons[buttonId].config(state=DISABLED)
 		threading.Thread(target=nieuwe_vraag_delay).start()
 	else:
+		buttons[id].config(state=DISABLED)
 		buttons[id].config(bg="#FF0000")
 		score -= 5
 	displayScore()
@@ -238,11 +237,15 @@ startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
 leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
+introButton = Button(startFrame, text="INTRO", width=15, command=switchToIntro)
+introButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
+
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
 nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
 startButton.grid(row=2, column=0, sticky=W, pady=(60, 8), columnspan=2, ipadx=10, ipady=2)
 leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
+introButton.grid(row=4, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
 
 introFrame = Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
@@ -263,6 +266,7 @@ gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
