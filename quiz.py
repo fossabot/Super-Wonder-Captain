@@ -116,6 +116,16 @@ def newGame():
     gameFrame.pack(expand=True, fill="both")
     nextQuestion()
 
+def newGame2():
+    'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
+    global score
+    global vragen_gesteld
+    vragen_gesteld = 0
+    score = 0
+    introFrame.pack_forget()
+    gameFrame.pack(expand=True, fill="both")
+    nextQuestion()
+
 def switchToIntro():
     global user
     mainMenu.pack_forget()
@@ -213,17 +223,20 @@ introFrame_background = PhotoImage(file="marvel-login-screen.png")
 introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 introLabel = Label(master=introFrame, bg='white', height=5)
-introLabel.place(relx=0.05, rely=0.5, anchor=W)
+introLabel.place(relx=0.02, rely=0.65, anchor=W, )
 
 menuButton = Button(introFrame, text="MENU", command=switchToMenu2)
 menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.place(relx=0.02, rely=0.0)
 
+startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame2)
+startButton2.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+startButton2.place(relx=0.5, rely=0.5)
+
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
