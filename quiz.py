@@ -15,7 +15,9 @@ from PIL import Image
 # tatras.show()
 
 window = Tk()
-window.iconbitmap(r'marvelicon.ico')
+#window.iconbitmap(r'marvelicon.bmp')
+logo = PhotoImage(file='marvelicon.gif')
+window.call('wm', 'iconphoto', window._w, logo)
 pyglet.font.add_file('changa.ttf')
 action_man = pyglet.font.load('Changa')
 
