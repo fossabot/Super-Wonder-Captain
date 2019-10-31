@@ -8,6 +8,10 @@ import threading
 import re
 import sqlite3
 import math
+import pyglet
+
+pyglet.font.add_file('changa.ttf')
+action_man = pyglet.font.load('Changa')
 
 currentQuestion = None
 score = 0
@@ -193,19 +197,19 @@ startFrame = Frame(mainMenu, bg="#fff")
 startFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 
 nameLabel = Label(startFrame, text="Naam:", bg="#fff")
-nameLabel.config(font=("Comic Sans MS", 12))
+nameLabel.config(font=("Changa", 12))
 
 nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
-nameEntry.config(font=("Comic Sans MS", 12))
+nameEntry.config(font=("Changa", 12))
 
 startButton = Button(startFrame, text="START", width=15, command=newGame)
-startButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+startButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
-leaderBoardButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 introButton = Button(startFrame, text="INTRO", width=15, command=switchToIntro)
-introButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+introButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
