@@ -8,13 +8,13 @@ import threading
 import re
 import sqlite3
 import math
-current_question=None
+currentQuestion=None
 score=0
 vragen_gesteld=0
 connection=sqlite3.connect('quiz.db')
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
-characterBuffer=[]
+questionBuffer=[]
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
 	loginInfo=json.load(open('apikey.json','r'))
@@ -27,7 +27,7 @@ def sendMarvelRequest(request):
 	return json.loads(httprequest.text)['data']['results']
 
 def selectCharacter():
-	'selecteert een character die een beschrijving heeft'
+	'selecteert een willekeurig character die een beschrijving heeft'
 	while True:
 		randomNumber=random.randint(0,1400)
 		characters=sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
@@ -46,6 +46,7 @@ def selectNames(characters,exclude):
 	return names
 
 def guiData():
+	'geeft de informatie die nodig is per character'
 	character,characters=selectCharacter()
 	name=character['name']
 	names=selectNames(characters,name)
@@ -58,36 +59,38 @@ def guiData():
 		comicsNames.append(comic['name'])
 	return {'names':names,'description':description,'name':name,'comics':comicsNames}
 #print(guiData())
-def buffer_character():
-	characterBuffer.append(guiData())
-def start_buffer_thread():
-	threading.Thread(target=buffer_character).start()
+def bufferVraag():
+	'zet de nieuwe vraag in de buffer.'
+	questionBuffer.append(guiData())
+def startBufferThread():
+	threading.Thread(target=bufferVraag).start()
 
-def get_new_character():
-	start_buffer_thread()
-	return characterBuffer.pop()
+def nextQuestion():
+	'start download nieuwe vraag, en stuurt gegevens van buffer terug.'
+	startBufferThread()
+	return questionBuffer.pop()
 
 def init_buffer():
-	start_buffer_thread()
-	start_buffer_thread()
-	time.sleep(2)
+	'download 2 vragen op de achtergrond'
+	startBufferThread()
+	startBufferThread()
 
-#init_buffer()
-#time.sleep(5)
-#print(json.dumps(get_new_character(), indent=4, sort_keys=True), json.dumps(characterBuffer, indent=4, sort_keys=True))
 def displayCharacter():
-	global current_character
-	current_character=get_new_character()
+	'zet nieuwe vraag in het frame'
+	global currentQuestion
+	currentQuestion=get_new_character()
 	for id in range(len(buttons)):
-		buttons[id].config(text=current_character['names'][id],bg="#202020")
-	#description.config(text=character['description']
+		buttons[id].config(text=currentQuestion['names'][id],bg="#202020")
+	#TODO: afbeelding weergeven
 
 def saveScores(naam,score):
+	'slaat de score op in de SQLite database'
 	timestamp=math.floor(time.time())
 	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam,timestamp,score))
 	connection.commit()
 
 def highscores():
+	'haalt de highscores uit de database'
 	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
 	data=cursor.fetchall()
 	return data
@@ -98,6 +101,7 @@ init_buffer()
 
 # Tkinter GUI
 def newGame():
+	'gameFrame in beeld brengen, score en aantal vragen beantwoord resetten'
 	global score
 	global vragen_gesteld
 	vragen_gesteld=0
@@ -114,13 +118,16 @@ def switchToIntro():
 	label['text'] = tekst.format(nameEntry)
 
 def switchToMenu():
+	'stopt spel, en gaat naar menu'
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
 def displayScore():
+	'update de score op het scherm.'
 	scoreLabel.config(text=score)
 
 def nieuwe_vraag_delay():
+	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
 	time.sleep(1)
 	if(vragen_gesteld==10):
 		einde_spel()#TODO
