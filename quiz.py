@@ -112,6 +112,7 @@ def switchToIntro():
 	mainMenu.pack_forget()
 	introFrame.pack(expand=True, fill='both')
 	user = nameEntry.get()
+	introLabel.config(text=f'Hoi {user}, welkom bij de quiz!')
 
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
@@ -193,7 +194,7 @@ introFrame= Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
 introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-introLabel = Label(master=introFrame, text="Hallo "+user+" Welkom bij de quiz".format(user), height=3)
+introLabel = Label(master=introFrame, height=3)
 introLabel.place(relx=0.5, rely=0.5)
 
 
