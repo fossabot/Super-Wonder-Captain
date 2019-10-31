@@ -235,7 +235,7 @@ questionContainer.place(relx=0.30, rely=0.30)
 buttons = []
 for i in range(10):
     actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
-    actionButton.config(font=("Comic sans MS", 10, "bold"), fg="#fff", bd="0", pady=())
+    actionButton.config(font=("Comic sans MS", 10, "bold"), fg="#fff", bd="0")
     actionButton.grid(row=i, pady=(5, 5))
     buttons.append(actionButton)
 
