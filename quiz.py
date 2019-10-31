@@ -70,7 +70,7 @@ def nextQuestionData():
 	startBufferThread()
 	return questionBuffer.pop()
 
-def init_buffer():
+def initBuffer():
 	'download 2 vragen op de achtergrond'
 	startBufferThread()
 	startBufferThread()
@@ -94,10 +94,6 @@ def highscores():
 	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
 	data=cursor.fetchall()
 	return data
-#print(highscores())
-init_buffer()
-#time.sleep(3)
-#print(json.dumps(sendMarvelRequest('comics/21366?'), indent=4, sort_keys=True))
 
 # Tkinter GUI
 def newGame():
@@ -136,6 +132,7 @@ def nieuwe_vraag_delay():
 	
 
 def buttonClicked(id):
+	'wordt uitgevoerd wanneer er een antwoord wordt gegeven, controlleert of het antwoord goed is, en update de punten wanneer nodig'
 	global score
 	nameClicked=currentQuestion['names'][id]
 	correct=currentQuestion['name']
@@ -148,6 +145,7 @@ def buttonClicked(id):
 	displayScore()
 
 def nextQuestion():
+	'geeft de volgende vraag, en update de punten'
 	global score
 	global vragen_gesteld
 	vragen_gesteld+=1
@@ -212,10 +210,7 @@ description.place(relx=0.5, rely=0.1, anchor=CENTER)
 scoreLabel=Label(gameFrame,text="<SCORE>")
 scoreLabel.place(relx=0, rely=0.9, anchor=W)
 
+
+initBuffer()
 switchToMenu()
 window.mainloop()
-
-def Christoffer_random_shit():
-	print()
-
-Christoffer_random_shit()
