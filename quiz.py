@@ -170,18 +170,19 @@ startFrame = Frame(mainMenu, bg="#fff")
 startFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 
 nameLabel = Label(startFrame, text="Naam:", bg="#fff")
-nameLabel.config(font=("Quicksand", 12))
+nameLabel.config(font=("Comic Sans MS", 12))
 
 nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
-nameEntry.config(font=("Quicksand", 12))
+nameEntry.config(font=("Comic Sans MS", 12))
+
 startButton = Button(startFrame, text="START", width=15, command=newGame)
-startButton.config(font=("Quicksand", 10, "bold"), bg="#424242", fg="#fff", bd="0")
+startButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
-leaderBoardButton.config(font=("Quicksand", 10, "bold"), bg="#424242", fg="#fff", bd="0")
+leaderBoardButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 introButton = Button(startFrame, text="INTRO", width=15, command=switchToIntro)
-introButton.config(font=("Quicksand", 10, "bold"), bg="#424242", fg="#fff", bd="0")
+introButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
@@ -204,13 +205,16 @@ gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
-menuButton.config(font=("Quicksand", 10, "bold"), bg="#f4f4f4", fg="#717171", bd="0")
-menuButton.place(relx=0, rely=0)
+menuButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+menuButton.place(relx=0.02, rely=0.02)
+questionContainer = Label(gameFrame, bg="#F4F4F4")
+questionContainer.place(relx=0.30, rely=0.30)
+
 buttons=[]
 for i in range(10):
-	actionButton=Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
-	actionButton.config(font=("Quicksand", 10, "bold"), fg="#fff", bd="0")
-	actionButton.grid(row=i, column=0, pady=(10, 10), padx=(350, 10), columnspan=2, ipadx=10, ipady=2)
+	actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
+	actionButton.config(font=("Comic sans", 10, "bold"), fg="#fff", bd="0")
+	actionButton.grid(row=i, pady=(5, 5))
 	buttons.append(actionButton)
 
 description=Label(gameFrame,text="<DESC>")
