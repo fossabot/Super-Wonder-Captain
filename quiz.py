@@ -199,17 +199,20 @@ gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.place(relx=0.02, rely=0.02)
+questionContainer = Label(gameFrame, bg="#F4F4F4")
+questionContainer.place(relx=0.30, rely=0.10)
+
 buttons=[]
 for i in range(10):
-	actionButton = Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
+	actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
 	actionButton.config(font=("Quicksand", 10, "bold"), fg="#fff", bd="0")
-	actionButton.grid(row=i, column=0, pady=(10, 10), padx=(350, 10), columnspan=2, ipadx=10, ipady=2)
+	actionButton.grid(row=i, pady=(5, 5))
 	buttons.append(actionButton)
 
 description=Label(gameFrame,text="<DESC>")
 description.place(relx=0.5, rely=0.1, anchor=CENTER)
 scoreLabel=Label(gameFrame,text="<SCORE>")
-scoreLabel.place(relx=0, rely=0.9, anchor=W)
+scoreLabel.place(relx=0.00, rely=0.90, anchor=W)
 
 initBuffer()
 switchToMenu()
