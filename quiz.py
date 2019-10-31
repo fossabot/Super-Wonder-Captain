@@ -9,9 +9,12 @@ import re
 import sqlite3
 import math
 import pyglet
-window=Tk()
+from PIL import Image
 
+# tatras = Image.open("http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_incredible.jpg")
+# tatras.show()
 
+window = Tk()
 window.iconbitmap(r'marvelicon.ico')
 pyglet.font.add_file('changa.ttf')
 action_man = pyglet.font.load('Changa')
@@ -186,7 +189,6 @@ def nextQuestion():
     score += 15
     displayCharacter()
     displayScore()
-
 
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
