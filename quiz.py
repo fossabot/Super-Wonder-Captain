@@ -243,22 +243,18 @@ startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
 leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
-introButton = Button(startFrame, text="INTRO", width=15, command=switchToIntro)
-introButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
-
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
 nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
 startButton.grid(row=2, column=0, sticky=W, pady=(60, 8), columnspan=2, ipadx=10, ipady=2)
 leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
-introButton.grid(row=4, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
 
 introFrame = Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
 introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 introLabel = Label(master=introFrame, bg='white', height=5)
-introLabel.place(relx=-0.01, rely=0.65, anchor=W, )
+introLabel.place(relx=0.21, rely=0.65, anchor=CENTER)
 
 menuButton2 = Button(introFrame, text="TERUG NAAR MENU", command=switchToMenu2)
 menuButton2.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
