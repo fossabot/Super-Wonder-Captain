@@ -9,7 +9,10 @@ import re
 import sqlite3
 import math
 import pyglet
+window=Tk()
 
+
+window.iconbitmap(r'marvelicon.ico')
 pyglet.font.add_file('changa.ttf')
 action_man = pyglet.font.load('Changa')
 
@@ -22,6 +25,7 @@ cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT
 questionBuffer = []
 user = ""
 
+
 def sendMarvelRequest(request):
     'stuurt een aanvraag naar de Marvel API'
     loginInfo = json.load(open('apikey.json', 'r'))
@@ -33,6 +37,7 @@ def sendMarvelRequest(request):
     httprequest = requests.get(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}')
     return json.loads(httprequest.text)['data']['results']
 
+
 def selectCharacter():
     'selecteert een willekeurig character die een beschrijving heeft'
     while True:
@@ -41,6 +46,7 @@ def selectCharacter():
         for character in characters:
             if len(character['description']) > 0:
                 return character, characters
+
 
 def selectNames(characters, exclude):
     'selecteert de namen die gebruikt worden bij multiplechoice'
@@ -51,6 +57,7 @@ def selectNames(characters, exclude):
             names.append(character['name'])
     random.shuffle(names)
     return names
+
 
 def guiData():
     'geeft de informatie die nodig is per character'
@@ -66,30 +73,36 @@ def guiData():
         comicsNames.append(comic['name'])
     return {'names': names, 'description': description, 'name': name, 'comics': comicsNames}
 
+
 # print(guiData())
 def bufferVraag():
     'zet de nieuwe vraag in de buffer.'
     questionBuffer.append(guiData())
 
+
 def startBufferThread():
     threading.Thread(target=bufferVraag).start()
+
 
 def nextQuestionData():
     'start download nieuwe vraag, en stuurt gegevens van buffer terug.'
     startBufferThread()
     return questionBuffer.pop()
 
+
 def initBuffer():
     'download 2 vragen op de achtergrond'
     startBufferThread()
     startBufferThread()
+
 
 def displayCharacter():
     'zet nieuwe vraag in het frame'
     global currentQuestion
     currentQuestion = nextQuestionData()
     for id in range(len(buttons)):
-        buttons[id].config(text=currentQuestion['names'][id], bg="#202020")
+        buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
+
 
 # TODO: afbeelding weergeven
 
@@ -99,11 +112,13 @@ def saveScores(naam, score):
     cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
     connection.commit()
 
+
 def highscores():
     'haalt de highscores uit de database'
     cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
     data = cursor.fetchall()
     return data
+
 
 # Tkinter GUI
 def newGame():
@@ -151,6 +166,7 @@ def displayScore():
     'update de score op het scherm.'
     scoreLabel.config(text=score)
 
+
 def nieuwe_vraag_delay():
     'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
     time.sleep(1)
@@ -158,6 +174,7 @@ def nieuwe_vraag_delay():
         einde_spel()  # TODO
     else:
         nextQuestion()
+
 
 def buttonClicked(id):
     'wordt uitgevoerd wanneer er een antwoord wordt gegeven, controlleert of het antwoord goed is, en update de punten wanneer nodig'
@@ -172,6 +189,7 @@ def buttonClicked(id):
         score -= 5
     displayScore()
 
+
 def nextQuestion():
     'geeft de volgende vraag, en update de punten'
     global score
@@ -181,7 +199,7 @@ def nextQuestion():
     displayCharacter()
     displayScore()
 
-window = Tk()
+
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
 # mainMenu = Frame(window, height=768, width=1280)
@@ -203,20 +221,20 @@ nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
 nameEntry.config(font=("Changa", 12))
 
 startButton = Button(startFrame, text="START", width=15, command=newGame)
-startButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
-leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 introButton = Button(startFrame, text="INTRO", width=15, command=switchToIntro)
-introButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+introButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
 nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
-startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
-leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 5), columnspan=2, ipadx=10, ipady=2)
-introButton.grid(row=4, column=0, sticky=W, pady=(5, 5), columnspan=2, ipadx=10, ipady=2)
+startButton.grid(row=2, column=0, sticky=W, pady=(60, 8), columnspan=2, ipadx=10, ipady=2)
+leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
+introButton.grid(row=4, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
 
 introFrame = Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
@@ -238,21 +256,23 @@ gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
-menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
-menuButton.place(relx=0.02, rely=0.0)
-questionContainer = Label(gameFrame, bg="#F4F4F4")
-questionContainer.place(relx=0.30, rely=0.30)
+menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+menuButton.place(relx=0.02, rely=0.02)
+
+questionContainer = Label(gameFrame, bg="#f4f4f4")
+questionContainer.place(relx=0.20, rely=0.25)
 
 buttons = []
 for i in range(10):
     actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
-    actionButton.config(font=("Changa", 10, "bold"), fg="#fff", bd="0")
+    actionButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#fff", bd="0")
     actionButton.grid(row=i, pady=(5, 5))
     buttons.append(actionButton)
 
 description = Label(gameFrame, text="<DESC>")
-description.place(relx=0.5, rely=0.1, anchor=CENTER)
+description.place(relx=0.15, rely=0.1, anchor=CENTER)
 scoreLabel = Label(gameFrame, text="<SCORE>")
 scoreLabel.place(relx=0, rely=0.9, anchor=W)
 
