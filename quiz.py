@@ -22,7 +22,6 @@ cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT
 questionBuffer = []
 user = ""
 
-
 def sendMarvelRequest(request):
     'stuurt een aanvraag naar de Marvel API'
     loginInfo = json.load(open('apikey.json', 'r'))
@@ -34,7 +33,6 @@ def sendMarvelRequest(request):
     httprequest = requests.get(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}')
     return json.loads(httprequest.text)['data']['results']
 
-
 def selectCharacter():
     'selecteert een willekeurig character die een beschrijving heeft'
     while True:
@@ -43,7 +41,6 @@ def selectCharacter():
         for character in characters:
             if len(character['description']) > 0:
                 return character, characters
-
 
 def selectNames(characters, exclude):
     'selecteert de namen die gebruikt worden bij multiplechoice'
@@ -54,7 +51,6 @@ def selectNames(characters, exclude):
             names.append(character['name'])
     random.shuffle(names)
     return names
-
 
 def guiData():
     'geeft de informatie die nodig is per character'
@@ -70,28 +66,23 @@ def guiData():
         comicsNames.append(comic['name'])
     return {'names': names, 'description': description, 'name': name, 'comics': comicsNames}
 
-
 # print(guiData())
 def bufferVraag():
     'zet de nieuwe vraag in de buffer.'
     questionBuffer.append(guiData())
 
-
 def startBufferThread():
     threading.Thread(target=bufferVraag).start()
-
 
 def nextQuestionData():
     'start download nieuwe vraag, en stuurt gegevens van buffer terug.'
     startBufferThread()
     return questionBuffer.pop()
 
-
 def initBuffer():
     'download 2 vragen op de achtergrond'
     startBufferThread()
     startBufferThread()
-
 
 def displayCharacter():
     'zet nieuwe vraag in het frame'
@@ -99,7 +90,6 @@ def displayCharacter():
     currentQuestion = nextQuestionData()
     for id in range(len(buttons)):
         buttons[id].config(text=currentQuestion['names'][id], bg="#202020")
-
 
 # TODO: afbeelding weergeven
 
@@ -109,13 +99,11 @@ def saveScores(naam, score):
     cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
     connection.commit()
 
-
 def highscores():
     'haalt de highscores uit de database'
     cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
     data = cursor.fetchall()
     return data
-
 
 # Tkinter GUI
 def newGame():
@@ -128,25 +116,26 @@ def newGame():
     gameFrame.pack(expand=True, fill="both")
     nextQuestion()
 
-
 def switchToIntro():
     global user
     mainMenu.pack_forget()
     introFrame.pack(expand=True, fill='both')
     user = nameEntry.get()
-    introLabel.config(text=f'Hoi {user}, welkom bij de quiz!')
-
+    introLabel.config(text=f'''Hoi {user}, welkom bij de quiz!
+    Probeer met zo min mogelijk hints de superheld te raden.
+    Je kan maximaal 15 punten per vraag krijgen.
+    Je krijgt 3 minpunten voor een hint en 5 minpunten voor een fout antwoord.
+    Succes!''')
+    introLabel.config(font="Changa")
 
 def switchToMenu():
     'stopt spel, en gaat naar menu'
     gameFrame.pack_forget()
     mainMenu.pack(expand=True, fill="both")
 
-
 def displayScore():
     'update de score op het scherm.'
     scoreLabel.config(text=score)
-
 
 def nieuwe_vraag_delay():
     'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
@@ -155,7 +144,6 @@ def nieuwe_vraag_delay():
         einde_spel()  # TODO
     else:
         nextQuestion()
-
 
 def buttonClicked(id):
     'wordt uitgevoerd wanneer er een antwoord wordt gegeven, controlleert of het antwoord goed is, en update de punten wanneer nodig'
@@ -170,7 +158,6 @@ def buttonClicked(id):
         score -= 5
     displayScore()
 
-
 def nextQuestion():
     'geeft de volgende vraag, en update de punten'
     global score
@@ -179,7 +166,6 @@ def nextQuestion():
     score += 15
     displayCharacter()
     displayScore()
-
 
 window = Tk()
 window.title("Marvel Quiz")
@@ -222,13 +208,14 @@ introFrame = Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
 introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-introLabel = Label(master=introFrame, bg='white', height=3)
-introLabel.place(relx=0.1, rely=0.5, anchor=W)
+introLabel = Label(master=introFrame, bg='white', height=5)
+introLabel.place(relx=0.05, rely=0.5, anchor=W)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
