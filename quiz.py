@@ -65,7 +65,7 @@ def bufferVraag():
 def startBufferThread():
 	threading.Thread(target=bufferVraag).start()
 
-def nextQuestion():
+def nextQuestionData():
 	'start download nieuwe vraag, en stuurt gegevens van buffer terug.'
 	startBufferThread()
 	return questionBuffer.pop()
@@ -78,7 +78,7 @@ def init_buffer():
 def displayCharacter():
 	'zet nieuwe vraag in het frame'
 	global currentQuestion
-	currentQuestion=get_new_character()
+	currentQuestion=nextQuestionData()
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id],bg="#202020")
 	#TODO: afbeelding weergeven
@@ -137,16 +137,11 @@ def nieuwe_vraag_delay():
 
 def buttonClicked(id):
 	global score
-	print(id)
-	nameClicked=current_character['names'][id]
-	print(nameClicked)
-	correct=current_character['name']
-	print(correct)
+	nameClicked=currentQuestion['names'][id]
+	correct=currentQuestion['name']
 	if correct==nameClicked:
 		buttons[id].config(bg="#00FF00")
-		print("correct")
 		threading.Thread(target=nieuwe_vraag_delay).start()
-		
 	else:
 		buttons[id].config(bg="#FF0000")
 		score-=5
