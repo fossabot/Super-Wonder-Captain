@@ -125,7 +125,7 @@ def newGame():
     global score
     global vragen_gesteld
     vragen_gesteld = 0
-    score = 10  # met elke vraag komt er 15 bij, dus dit zou goed moeten zijn.
+    score = 0
     mainMenu.pack_forget()
     gameFrame.pack(expand=True, fill="both")
     nextQuestion()
@@ -136,8 +136,12 @@ def switchToIntro():
     mainMenu.pack_forget()
     introFrame.pack(expand=True, fill='both')
     user = nameEntry.get()
-    introLabel.config(text=f'Hoi {user}, welkom bij de quiz!')
-
+    introLabel.config(text=f'''Hoi {user}, welkom bij de quiz!
+    Probeer met zo min mogelijk hints de superheld te raden.
+    Je kan maximaal 15 punten per vraag krijgen.
+    Je krijgt 3 minpunten voor een hint en 5 minpunten voor een fout antwoord.
+    Succes!''')
+    introLabel.config(font="Changa")
 
 def switchToMenu():
     'stopt spel, en gaat naar menu'
@@ -223,24 +227,27 @@ introFrame = Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
 introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-introLabel = Label(master=introFrame, bg='white', height=3)
-introLabel.place(relx=0.1, rely=0.5, anchor=W)
+introLabel = Label(master=introFrame, bg='white', height=5)
+introLabel.place(relx=0.05, rely=0.5, anchor=W)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Comic Sans MS", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 menuButton.place(relx=0.02, rely=0.02)
+menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+menuButton.place(relx=0.02, rely=0.0)
 questionContainer = Label(gameFrame, bg="#F4F4F4")
 questionContainer.place(relx=0.30, rely=0.30)
 
 buttons = []
 for i in range(10):
     actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
-    actionButton.config(font=("Comic sans MS", 10, "bold"), fg="#fff", bd="0")
+    actionButton.config(font=("Changa", 10, "bold"), fg="#fff", bd="0")
     actionButton.grid(row=i, pady=(5, 5))
     buttons.append(actionButton)
 
