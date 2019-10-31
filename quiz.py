@@ -32,177 +32,177 @@ user = ""
 
 
 def sendMarvelRequest(request):
-    'stuurt een aanvraag naar de Marvel API'
-    loginInfo = json.load(open('apikey.json', 'r'))
-    stamp = str(time.time())
-    pubkey = loginInfo['pubkey']
-    privatekey = loginInfo['privatekey']
-    hashString = stamp + privatekey + pubkey
-    hash = hashlib.md5(hashString.encode()).hexdigest()
-    httprequest = requests.get(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}')
-    return json.loads(httprequest.text)['data']['results']
+	'stuurt een aanvraag naar de Marvel API'
+	loginInfo = json.load(open('apikey.json', 'r'))
+	stamp = str(time.time())
+	pubkey = loginInfo['pubkey']
+	privatekey = loginInfo['privatekey']
+	hashString = stamp + privatekey + pubkey
+	hash = hashlib.md5(hashString.encode()).hexdigest()
+	httprequest = requests.get(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}')
+	return json.loads(httprequest.text)['data']['results']
 
 
 def selectCharacter():
-    'selecteert een willekeurig character die een beschrijving heeft'
-    while True:
-        randomNumber = random.randint(0, 1400)
-        characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
-        for character in characters:
-            if len(character['description']) > 0:
-                return character, characters
+	'selecteert een willekeurig character die een beschrijving heeft'
+	while True:
+		randomNumber = random.randint(0, 1400)
+		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
+		for character in characters:
+			if len(character['description']) > 0:
+				return character, characters
 
 
 def selectNames(characters, exclude):
-    'selecteert de namen die gebruikt worden bij multiplechoice'
-    names = [exclude]
-    while len(names) < 10:
-        character = random.choice(characters)
-        if character['name'] not in names:
-            names.append(character['name'])
-    random.shuffle(names)
-    return names
+	'selecteert de namen die gebruikt worden bij multiplechoice'
+	names = [exclude]
+	while len(names) < 10:
+		character = random.choice(characters)
+		if character['name'] not in names:
+			names.append(character['name'])
+	random.shuffle(names)
+	return names
 
 
 def guiData():
-    'geeft de informatie die nodig is per character'
-    character, characters = selectCharacter()
-    name = character['name']
-    names = selectNames(characters, name)
-    replace_regex = re.compile(re.escape(name), re.IGNORECASE)  # zoeken zonder op hoofdletters te letten.
-    description = replace_regex.sub('<naam>', character['description'])
-    comics = character['comics']['items']
-    random.shuffle(comics)
-    comicsNames = []
-    for comic in comics:
-        comicsNames.append(comic['name'])
-    return {'names': names, 'description': description, 'name': name, 'comics': comicsNames}
+	'geeft de informatie die nodig is per character'
+	character, characters = selectCharacter()
+	name = character['name']
+	names = selectNames(characters, name)
+	replace_regex = re.compile(re.escape(name), re.IGNORECASE)  # zoeken zonder op hoofdletters te letten.
+	description = replace_regex.sub('<naam>', character['description'])
+	comics = character['comics']['items']
+	random.shuffle(comics)
+	comicsNames = []
+	for comic in comics:
+		comicsNames.append(comic['name'])
+	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames}
 
 
 # print(guiData())
 def bufferVraag():
-    'zet de nieuwe vraag in de buffer.'
-    questionBuffer.append(guiData())
+	'zet de nieuwe vraag in de buffer.'
+	questionBuffer.append(guiData())
 
 
 def startBufferThread():
-    threading.Thread(target=bufferVraag).start()
+	threading.Thread(target=bufferVraag).start()
 
 
 def nextQuestionData():
-    'start download nieuwe vraag, en stuurt gegevens van buffer terug.'
-    startBufferThread()
-    return questionBuffer.pop()
+	'start download nieuwe vraag, en stuurt gegevens van buffer terug.'
+	startBufferThread()
+	return questionBuffer.pop()
 
 
 def initBuffer():
-    'download 2 vragen op de achtergrond'
-    startBufferThread()
-    startBufferThread()
+	'download 2 vragen op de achtergrond'
+	startBufferThread()
+	startBufferThread()
 
 
 def displayCharacter():
-    'zet nieuwe vraag in het frame'
-    global currentQuestion
-    currentQuestion = nextQuestionData()
-    for id in range(len(buttons)):
-        buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
+	'zet nieuwe vraag in het frame'
+	global currentQuestion
+	currentQuestion = nextQuestionData()
+	for id in range(len(buttons)):
+		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 
 
 # TODO: afbeelding weergeven
 
 def saveScores(naam, score):
-    'slaat de score op in de SQLite database'
-    timestamp = math.floor(time.time())
-    cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
-    connection.commit()
+	'slaat de score op in de SQLite database'
+	timestamp = math.floor(time.time())
+	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
+	connection.commit()
 
 
 def highscores():
-    'haalt de highscores uit de database'
-    cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
-    data = cursor.fetchall()
-    return data
+	'haalt de highscores uit de database'
+	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
+	data = cursor.fetchall()
+	return data
 
 
 # Tkinter GUI
 def newGame():
-    'gameFrame in beeld brengen, score en aantal vragen beantwoord resetten'
-    global score
-    global vragen_gesteld
-    vragen_gesteld = 0
-    score = 0
-    mainMenu.pack_forget()
-    gameFrame.pack(expand=True, fill="both")
-    nextQuestion()
+	'gameFrame in beeld brengen, score en aantal vragen beantwoord resetten'
+	global score
+	global vragen_gesteld
+	vragen_gesteld = 0
+	score = 0
+	mainMenu.pack_forget()
+	gameFrame.pack(expand=True, fill="both")
+	nextQuestion()
 
 def newGame2():
-    'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
-    global score
-    global vragen_gesteld
-    vragen_gesteld = 0
-    score = 0
-    introFrame.pack_forget()
-    gameFrame.pack(expand=True, fill="both")
-    nextQuestion()
+	'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
+	global score
+	global vragen_gesteld
+	vragen_gesteld = 0
+	score = 0
+	introFrame.pack_forget()
+	gameFrame.pack(expand=True, fill="both")
+	nextQuestion()
 
 def switchToIntro():
-    global user
-    mainMenu.pack_forget()
-    introFrame.pack(expand=True, fill='both')
-    user = nameEntry.get()
-    introLabel.config(text=f'''Hoi {user}, welkom bij de quiz!
-    Probeer met zo min mogelijk hints de superheld te raden.
-    Je kan maximaal 15 punten per vraag krijgen.
-    Je krijgt 3 minpunten voor een hint en 5 minpunten voor een fout antwoord.
-    Succes!''')
-    introLabel.config(font="Changa")
+	global user
+	mainMenu.pack_forget()
+	introFrame.pack(expand=True, fill='both')
+	user = nameEntry.get()
+	introLabel.config(text=f'''Hoi {user}, welkom bij de quiz!
+	Probeer met zo min mogelijk hints de superheld te raden.
+	Je kan maximaal 15 punten per vraag krijgen.
+	Je krijgt 3 minpunten voor een hint en 5 minpunten voor een fout antwoord.
+	Succes!''')
+	introLabel.config(font="Changa")
 
 def switchToMenu():
-    'stopt spel, en gaat naar menu'
-    gameFrame.pack_forget()
-    mainMenu.pack(expand=True, fill="both")
+	'stopt spel, en gaat naar menu'
+	gameFrame.pack_forget()
+	mainMenu.pack(expand=True, fill="both")
 
 def switchToMenu2():
-    introFrame.pack_forget()
-    mainMenu.pack(expand=True, fill="both")
+	introFrame.pack_forget()
+	mainMenu.pack(expand=True, fill="both")
 
 def displayScore():
-    'update de score op het scherm.'
-    scoreLabel.config(text=score)
+	'update de score op het scherm.'
+	scoreLabel.config(text=score)
 
 
 def nieuwe_vraag_delay():
-    'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
-    time.sleep(1)
-    if (vragen_gesteld == 10):
-        einde_spel()  # TODO
-    else:
-        nextQuestion()
+	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
+	time.sleep(1)
+	if (vragen_gesteld == 10):
+		einde_spel()  # TODO
+	else:
+		nextQuestion()
 
 
 def buttonClicked(id):
-    'wordt uitgevoerd wanneer er een antwoord wordt gegeven, controlleert of het antwoord goed is, en update de punten wanneer nodig'
-    global score
-    nameClicked = currentQuestion['names'][id]
-    correct = currentQuestion['name']
-    if correct == nameClicked:
-        buttons[id].config(bg="#00FF00")
-        threading.Thread(target=nieuwe_vraag_delay).start()
-    else:
-        buttons[id].config(bg="#FF0000")
-        score -= 5
-    displayScore()
+	'wordt uitgevoerd wanneer er een antwoord wordt gegeven, controlleert of het antwoord goed is, en update de punten wanneer nodig'
+	global score
+	nameClicked = currentQuestion['names'][id]
+	correct = currentQuestion['name']
+	if correct == nameClicked:
+		buttons[id].config(bg="#00FF00")
+		threading.Thread(target=nieuwe_vraag_delay).start()
+	else:
+		buttons[id].config(bg="#FF0000")
+		score -= 5
+	displayScore()
 
 
 def nextQuestion():
-    'geeft de volgende vraag, en update de punten'
-    global score
-    global vragen_gesteld
-    vragen_gesteld += 1
-    score += 15
-    displayCharacter()
-    displayScore()
+	'geeft de volgende vraag, en update de punten'
+	global score
+	global vragen_gesteld
+	vragen_gesteld += 1
+	score += 15
+	displayCharacter()
+	displayScore()
 
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
@@ -269,15 +269,20 @@ questionContainer.place(relx=0.20, rely=0.25)
 
 buttons = []
 for i in range(10):
-    actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
-    actionButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#fff", bd="0")
-    actionButton.grid(row=i, pady=(5, 5))
-    buttons.append(actionButton)
+	actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
+	actionButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#fff", bd="0")
+	actionButton.grid(row=i, pady=(5, 5))
+	buttons.append(actionButton)
 
 description = Label(gameFrame, text="<DESC>")
 description.place(relx=0.15, rely=0.1, anchor=CENTER)
 scoreLabel = Label(gameFrame, text="<SCORE>")
 scoreLabel.place(relx=0, rely=0.9, anchor=W)
+
+leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
+leaderFrameBackgroundImage = PhotoImage(file="marvel-login-screen.png")
+leaderFrameBackgroundLabel = Label(leaderFrame, image=leaderFrameBackgroundImage)
+
 
 initBuffer()
 switchToMenu()
