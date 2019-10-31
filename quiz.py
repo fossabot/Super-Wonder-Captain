@@ -111,7 +111,7 @@ def newGame():
     global score
     global vragen_gesteld
     vragen_gesteld = 0
-    score = 10  # met elke vraag komt er 15 bij, dus dit zou goed moeten zijn.
+    score = 0
     mainMenu.pack_forget()
     gameFrame.pack(expand=True, fill="both")
     nextQuestion()
