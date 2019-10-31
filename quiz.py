@@ -218,8 +218,6 @@ introLabel.place(relx=0.05, rely=0.5, anchor=W)
 menuButton = Button(introFrame, text="MENU", command=switchToMenu2)
 menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
 menuButton.place(relx=0.02, rely=0.0)
-questionContainer = Label(introFrame, bg="#F4F4F4")
-questionContainer.place(relx=0.30, rely=0.30)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
