@@ -100,7 +100,7 @@ def displayCharacter():
     global currentQuestion
     currentQuestion = nextQuestionData()
     for id in range(len(buttons)):
-        buttons[id].config(text=currentQuestion['names'][id], bg="#202020")
+        buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 
 
 # TODO: afbeelding weergeven
@@ -219,9 +219,9 @@ introButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
 nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
-startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
-leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 5), columnspan=2, ipadx=10, ipady=2)
-introButton.grid(row=4, column=0, sticky=W, pady=(5, 5), columnspan=2, ipadx=10, ipady=2)
+startButton.grid(row=2, column=0, sticky=W, pady=(60, 8), columnspan=2, ipadx=10, ipady=2)
+leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
+introButton.grid(row=4, column=0, sticky=W, pady=(5, 8), columnspan=2, ipadx=10, ipady=2)
 
 introFrame = Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
@@ -237,22 +237,21 @@ gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
-menuButton.config(font=("Comic Sans MS", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 menuButton.place(relx=0.02, rely=0.02)
-menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
-menuButton.place(relx=0.02, rely=0.0)
-questionContainer = Label(gameFrame, bg="#F4F4F4")
-questionContainer.place(relx=0.30, rely=0.30)
+
+questionContainer = Label(gameFrame, bg="#f4f4f4")
+questionContainer.place(relx=0.20, rely=0.25)
 
 buttons = []
 for i in range(10):
     actionButton = Button(questionContainer, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
-    actionButton.config(font=("Changa", 10, "bold"), fg="#fff", bd="0")
+    actionButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#fff", bd="0")
     actionButton.grid(row=i, pady=(5, 5))
     buttons.append(actionButton)
 
 description = Label(gameFrame, text="<DESC>")
-description.place(relx=0.5, rely=0.1, anchor=CENTER)
+description.place(relx=0.15, rely=0.1, anchor=CENTER)
 scoreLabel = Label(gameFrame, text="<SCORE>")
 scoreLabel.place(relx=0, rely=0.9, anchor=W)
 
