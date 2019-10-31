@@ -113,7 +113,7 @@ def displayCharacter():
 	currentQuestion = nextQuestionData()
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
-
+		buttons[id].config(state='normal')
 
 # TODO: afbeelding weergeven
 
@@ -194,8 +194,11 @@ def buttonClicked(id):
 	correct = currentQuestion['name']
 	if correct == nameClicked:
 		buttons[id].config(bg="#00FF00")
+		for buttonId in range(len(buttons)):
+			buttons[buttonId].config(state=DISABLED)
 		threading.Thread(target=nieuwe_vraag_delay).start()
 	else:
+		buttons[id].config(state=DISABLED)
 		buttons[id].config(bg="#FF0000")
 		score -= 5
 	displayScore()
