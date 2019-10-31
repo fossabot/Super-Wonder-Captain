@@ -204,7 +204,7 @@ buttons=[]
 for i in range(10):
 	actionButton=Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
 	actionButton.config(font=("Quicksand", 10, "bold"), fg="#fff", bd="0")
-	actionButton.grid(row=i, column=0, pady=(10, 10), padx=(70, 10), columnspan=2, ipadx=10, ipady=2)
+	actionButton.grid(row=i, column=0, pady=(10, 10), padx=(350, 10), columnspan=2, ipadx=10, ipady=2)
 	buttons.append(actionButton)
 
 description=Label(gameFrame,text="<DESC>")
@@ -214,8 +214,3 @@ scoreLabel.place(relx=0, rely=0.9, anchor=W)
 
 switchToMenu()
 window.mainloop()
-
-def Christoffer_random_shit():
-	print()
-
-Christoffer_random_shit()
