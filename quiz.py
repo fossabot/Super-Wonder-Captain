@@ -9,7 +9,7 @@ import re
 import sqlite3
 import math
 import pyglet
-from PIL import Image
+#from PIL import Image
 
 # tatras = Image.open("http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_incredible.jpg")
 # tatras.show()
@@ -247,19 +247,18 @@ introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 introLabel = Label(master=introFrame, bg='white', height=5)
 introLabel.place(relx=0.02, rely=0.65, anchor=W, )
 
-menuButton = Button(introFrame, text="MENU", command=switchToMenu2)
-menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
-menuButton.place(relx=0.02, rely=0.0)
+menuButton2 = Button(introFrame, text="MENU", command=switchToMenu2)
+menuButton2.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+menuButton2.place(relx=0.28, rely=0.45)
 
 startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame2)
 startButton2.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
-startButton2.place(relx=0.5, rely=0.5)
+startButton2.place(relx=0.13, rely=0.45)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
