@@ -8,6 +8,7 @@ import threading
 import re
 import sqlite3
 import math
+
 currentQuestion=None
 score=0
 vragen_gesteld=0
@@ -197,10 +198,10 @@ gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Quicksand", 10, "bold"), bg="#202020", fg="#fff", bd="0")
-menuButton.place(relx=0, rely=0)
+menuButton.place(relx=0.02, rely=0.02)
 buttons=[]
 for i in range(10):
-	actionButton=Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
+	actionButton = Button(gameFrame, text=str(i), command=lambda x=i: buttonClicked(x), anchor=CENTER)
 	actionButton.config(font=("Quicksand", 10, "bold"), fg="#fff", bd="0")
 	actionButton.grid(row=i, column=0, pady=(10, 10), padx=(350, 10), columnspan=2, ipadx=10, ipady=2)
 	buttons.append(actionButton)
