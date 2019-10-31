@@ -15,6 +15,7 @@ connection=sqlite3.connect('quiz.db')
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
 questionBuffer=[]
+user = ""
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
 	loginInfo=json.load(open('apikey.json','r'))
@@ -107,11 +108,10 @@ def newGame():
 	nextQuestion()
 
 def switchToIntro():
+	global user
 	mainMenu.pack_forget()
 	introFrame.pack(expand=True, fill='both')
-	displayCharacter()
-	tekst = 'Welkom bij de Marvel quiz {}!'
-	label['text'] = tekst.format(nameEntry)
+	user = nameEntry.get()
 
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
@@ -173,7 +173,6 @@ nameLabel.config(font=("Quicksand", 12))
 
 nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
 nameEntry.config(font=("Quicksand", 12))
-
 startButton = Button(startFrame, text="START", width=15, command=newGame)
 startButton.config(font=("Quicksand", 10, "bold"), bg="#424242", fg="#fff", bd="0")
 
@@ -189,6 +188,14 @@ nameEntry.grid(row=1, column=1, sticky=W, padx=(5, 0))
 startButton.grid(row=2, column=0, sticky=W, pady=(60, 10), columnspan=2, ipadx=10, ipady=2)
 leaderBoardButton.grid(row=3, column=0, sticky=W, pady=(5, 5), columnspan=2, ipadx=10, ipady=2)
 introButton.grid(row=4, column=0, sticky=W, pady=(5, 5), columnspan=2, ipadx=10, ipady=2)
+
+introFrame= Frame(window, height=800, width=1280, bg="#fff")
+introFrame_background = PhotoImage(file="marvel-login-screen.png")
+introFrame_background_label = Label(introFrame, image=introFrame_background)
+introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+introLabel = Label(master=introFrame, text="Hallo "+user+" Welkom bij de quiz".format(user), height=3)
+introLabel.place(relx=0.5, rely=0.5)
+
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
