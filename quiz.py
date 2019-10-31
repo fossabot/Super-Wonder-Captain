@@ -232,7 +232,7 @@ gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
-menuButton.place(relx=0.02, rely=0.02)
+menuButton.place(relx=0.02, rely=0.0)
 questionContainer = Label(gameFrame, bg="#F4F4F4")
 questionContainer.place(relx=0.30, rely=0.30)
 
