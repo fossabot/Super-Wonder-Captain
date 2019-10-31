@@ -84,11 +84,13 @@ def displayCharacter():
 	#TODO: afbeelding weergeven
 
 def saveScores(naam,score):
+	'slaat de score op in de SQLite database'
 	timestamp=math.floor(time.time())
 	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam,timestamp,score))
 	connection.commit()
 
 def highscores():
+	'haalt de highscores uit de database'
 	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
 	data=cursor.fetchall()
 	return data
@@ -99,6 +101,7 @@ init_buffer()
 
 # Tkinter GUI
 def newGame():
+	'gameFrame in beeld brengen, score en aantal vragen beantwoord resetten'
 	global score
 	global vragen_gesteld
 	vragen_gesteld=0
@@ -108,13 +111,16 @@ def newGame():
 	nextQuestion()
 
 def switchToMenu():
+	'stopt spel, en gaat naar menu'
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
 def displayScore():
+	'update de score op het scherm.'
 	scoreLabel.config(text=score)
 
 def nieuwe_vraag_delay():
+	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
 	time.sleep(1)
 	if(vragen_gesteld==10):
 		einde_spel()#TODO
