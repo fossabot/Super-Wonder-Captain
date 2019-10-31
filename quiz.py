@@ -9,7 +9,9 @@ import re
 import sqlite3
 import math
 import pyglet
+window=Tk()
 
+window.iconbitmap(r'marvelicon.ico')
 pyglet.font.add_file('changa.ttf')
 action_man = pyglet.font.load('Changa')
 
@@ -181,7 +183,6 @@ def nextQuestion():
     displayScore()
 
 
-window = Tk()
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
 # mainMenu = Frame(window, height=768, width=1280)
@@ -203,13 +204,13 @@ nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
 nameEntry.config(font=("Changa", 12))
 
 startButton = Button(startFrame, text="START", width=15, command=newGame)
-startButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
-leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 introButton = Button(startFrame, text="INTRO", width=15, command=switchToIntro)
-introButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+introButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 # Grid config / layout
 nameLabel.grid(row=1, column=0, sticky=W)
@@ -231,7 +232,7 @@ gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
-menuButton.config(font=("Comic Sans MS", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+menuButton.config(font=("Comic Sans MS", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 menuButton.place(relx=0.02, rely=0.02)
 questionContainer = Label(gameFrame, bg="#F4F4F4")
 questionContainer.place(relx=0.30, rely=0.30)
