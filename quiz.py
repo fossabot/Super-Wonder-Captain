@@ -133,6 +133,10 @@ def switchToMenu():
     gameFrame.pack_forget()
     mainMenu.pack(expand=True, fill="both")
 
+def switchToMenu2():
+    introFrame.pack_forget()
+    mainMenu.pack(expand=True, fill="both")
+
 def displayScore():
     'update de score op het scherm.'
     scoreLabel.config(text=score)
@@ -210,6 +214,12 @@ introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 introLabel = Label(master=introFrame, bg='white', height=5)
 introLabel.place(relx=0.05, rely=0.5, anchor=W)
+
+menuButton = Button(introFrame, text="MENU", command=switchToMenu2)
+menuButton.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+menuButton.place(relx=0.02, rely=0.0)
+questionContainer = Label(introFrame, bg="#F4F4F4")
+questionContainer.place(relx=0.30, rely=0.30)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
