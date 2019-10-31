@@ -195,8 +195,8 @@ introFrame= Frame(window, height=800, width=1280, bg="#fff")
 introFrame_background = PhotoImage(file="marvel-login-screen.png")
 introFrame_background_label = Label(introFrame, image=introFrame_background)
 introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-introLabel = Label(master=introFrame, height=3)
-introLabel.place(relx=0.5, rely=0.5)
+introLabel = Label(master=introFrame, bg='white', height=3)
+introLabel.place(relx=0.1, rely=0.5, anchor=W)
 
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
