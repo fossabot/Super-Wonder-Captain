@@ -1,4 +1,3 @@
-import requests
 import hashlib
 import time
 from tkinter import *
@@ -45,8 +44,8 @@ def sendMarvelRequest(request):
 	privatekey = loginInfo['privatekey']
 	hashString = stamp + privatekey + pubkey
 	hash = hashlib.md5(hashString.encode()).hexdigest()
-	httprequest = requests.get(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}')
-	return json.loads(httprequest.text)['data']['results']
+	jsondata=urllib.request.urlopen(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}').read()
+	return json.loads(jsondata)['data']['results']
 
 def selectCharacter():
 	'selecteert een willekeurig character die een beschrijving heeft'
