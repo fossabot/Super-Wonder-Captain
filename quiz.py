@@ -70,6 +70,7 @@ def selectCharacter():
 		characterImage = Label(gameFrame, image=image)
 		characterImage.place(rely=0.30, relx=0.60)
 
+
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
 				return character, characters
