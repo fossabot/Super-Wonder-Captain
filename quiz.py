@@ -55,7 +55,7 @@ def selectCharacter():
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
 		for character in characters:
-			if (len(character['description']) > 0) and (len(character['description']) < 200) and (character['thumbnail']['path']!="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available") and character['thumbnail']['path']=='jpg':
+			if (len(character['description']) > 0) and (len(character['description']) < 200) and (character['thumbnail']['path']!="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available") and (character['thumbnail']['extension']=='jpg'):
 				return character, characters
 
 def selectNames(characters, exclude):
@@ -246,7 +246,6 @@ def buttonClicked(id):
 	correct = currentQuestion['name']
 	if correct == nameClicked:
 		buttons[id].config(bg="#00FF00")
-		score += 15
 		for buttonId in range(len(buttons)):
 			buttons[buttonId].config(state=DISABLED)
 		threading.Thread(target=nieuwe_vraag_delay).start()
