@@ -257,11 +257,11 @@ introLabel = Label(master=introFrame, bg='white', height=5)
 introLabel.place(relx=0.21, rely=0.65, anchor=CENTER)
 
 menuButton2 = Button(introFrame, text="TERUG NAAR MENU", command=switchToMenu2)
-menuButton2.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+menuButton2.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 menuButton2.place(relx=0.25, rely=0.45)
 
 startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame2)
-startButton2.config(font=("Changa", 10, "bold"), bg="#202020", fg="#fff", bd="0")
+startButton2.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
 startButton2.place(relx=0.13, rely=0.45)
 
 gameFrame = Frame(window, height=800, width=1280, bg="#fff")
