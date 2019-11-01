@@ -173,6 +173,7 @@ def switchToIntro():
 
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
+	leaderFrame.pack_forget()
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
@@ -318,6 +319,9 @@ leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
 leaderFrameBackgroundImage = PhotoImage(file="marvel-login-screen.png")
 leaderFrameBackgroundLabel = Label(leaderFrame, image=leaderFrameBackgroundImage)
 leaderFrameBackgroundLabel.place(x=0, y=0, relwidth=1, relheight=1)
+leaderFrameBackButton = Button(leaderFrame, text="MENU", command=switchToMenu)
+leaderFrameBackButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+leaderFrameBackButton.place(relx=0.05, rely=0.32)
 leaderFrameGrid=Frame(leaderFrame)
 leaderFrameGrid.place(relx=0.1,rely=0.4)
 leaderBoardName=Label(leaderFrameGrid,text="Naam")
