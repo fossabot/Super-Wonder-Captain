@@ -13,6 +13,7 @@ import urllib.parse
 from PIL import Image, ImageTk
 import io
 from datetime import datetime
+from tkinter.messagebox import showinfo
 
 window = Tk()
 #window.iconbitmap(r'marvelicon.bmp')
@@ -83,7 +84,6 @@ def guiData():
 	urlpath = character['thumbnail']['path']
 	urlextension = character['thumbnail']['extension']
 	url = f"{urlpath}/portrait_uncanny.{urlextension}"
-	print(url)
 	raw_data = urllib.request.urlopen(url).read()
 	img = raw_data
 	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
@@ -150,18 +150,7 @@ def alltimeHighscores():
 	data = cursor.fetchall()
 	return data
 
-# Tkinter GUI
 def newGame():
-	'gameFrame in beeld brengen, score en aantal vragen beantwoord resetten'
-	global score
-	global vragen_gesteld
-	vragen_gesteld = 0
-	score = 0
-	mainMenu.pack_forget()
-	gameFrame.pack(expand=True, fill="both")
-	nextQuestion()
-
-def newGame2():
 	'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
 	global score
 	global vragen_gesteld
@@ -172,25 +161,20 @@ def newGame2():
 	nextQuestion()
 
 def switchToIntro():
+	'switcht naar de intro, en update de naam die wordt weergegeven.'
 	global user
+	user = nameEntry.get()
+	if(len(user)==0):
+		showinfo("Naam", "Voer een naam in.")
+		return
 	mainMenu.pack_forget()
 	introFrame.pack(expand=True, fill='both')
-	user = nameEntry.get()
 	introLabel.config(text=f'''Hoi {user}, welkom bij de quiz!
 	Probeer met zo min mogelijk hints de superheld te raden.
 	Je kan maximaal 15 punten per vraag krijgen.
 	Je krijgt 3 minpunten voor een hint en 5 minpunten voor een fout antwoord.
 	Succes!''')
 	introLabel.config(font="Changa")
-
-def einde_spel():
-	global user
-	gameFrame.pack_forget()
-	endFrame.pack(expand=True, fill='both')
-	user = nameEntry.get()
-	endLabel.config(text=f'''Dit is het einde van de Quiz! Bedankt voor het spelen! 
-Je hebt een score behaald van {score}''')
-	endLabel.config(font="Changa")
 
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
@@ -211,6 +195,7 @@ def displayScore():
 	scoreLabel.config(text="Score: "+str(score))
 
 def switchToScoreboard():
+	'update het scoreboard, en geeft de informatie weer.'
 	spelers=dailyHighscores()
 	for index,speler in enumerate(spelers):
 		date = datetime.fromtimestamp(speler[1]).strftime("%H:%M:%S")
@@ -227,8 +212,8 @@ def switchToScoreboard():
 	leaderFrame.pack(expand=True, fill="both")
 
 def einde_spel():
+	'slaat de score op, en geeft het eindframe'
 	saveScores()
-	global user
 	gameFrame.pack_forget()
 	endFrame.pack(expand=True, fill='both')
 	user = nameEntry.get()
@@ -275,7 +260,8 @@ def nextQuestion():
 	
 
 def displayAantalvragen():
-    aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
+	'geeft het aantal vragen rechtsonder weer'
+	aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
 
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
@@ -294,8 +280,15 @@ startFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 nameLabel = Label(startFrame, text="Naam:", bg="#fff")
 nameLabel.config(font=("Changa", 12))
 
-nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
+nameEntryText = StringVar()
+nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2", textvariable=nameEntryText)
 nameEntry.config(font=("Changa", 12))
+
+def character_limit(entry_text):
+	if len(entry_text.get()) > 0:
+		entry_text.set(entry_text.get()[:15])
+
+nameEntryText.trace("w", lambda *args: character_limit(nameEntryText))
 
 startButton = Button(startFrame, text="START", width=15, command=switchToIntro)
 startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
@@ -331,7 +324,7 @@ menuButton3 = Button(endFrame, text="TERUG NAAR MENU", command=switchToMenu3)
 menuButton3.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
 menuButton3.place(relx=0.15, rely=0.60)
 
-startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame2)
+startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame)
 startButton2.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
 startButton2.place(relx=0.13, rely=0.45)
 
