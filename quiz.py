@@ -83,8 +83,7 @@ def guiData():
 		comicsNames.append(comic['name'])
 	urlpath = character['thumbnail']['path']
 	urlextension = character['thumbnail']['extension']
-	url = f"{urlpath}/portrait_xlarge.{urlextension}"
-	print(url)
+	url = f"{urlpath}/landscape_incredible.{urlextension}"
 	raw_data = urllib.request.urlopen(url).read()
 	img = raw_data
 	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
@@ -356,7 +355,7 @@ scoreLabel.place(relx=0.02, rely=0.9, anchor=W)
 scoreLabel.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 
 characterImage = Label(gameFrame, image=PhotoImage(file="marvel-login-screen.png"))
-characterImage.place(rely=0.30, relx=0.60)
+characterImage.place(rely=0.30, relx=0.50)
 
 leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
 leaderFrameBackgroundImage = PhotoImage(file="marvel-quiz-background.png")
@@ -381,6 +380,12 @@ alltimeleaderBoardDate=Label(alltimeleaderFrameGrid,text="Datum", bg="#f4f4f4", 
 alltimeleaderBoardDate.grid(row=0,column=2)
 alltimeleaderBoardScore=Label(alltimeleaderFrameGrid,text="Score", bg="#f4f4f4", fg="#6c6c6c")
 alltimeleaderBoardScore.grid(row=0,column=3)
+dailyLabel = Label(leaderFrame, text="Dagelijks:", bg="#fff")
+dailyLabel.config(font=("Changa", 12), bg="#f4f4f4", fg="#6c6c6c")
+dailyLabel.place(relx=0.05, rely=0.15)
+alltimeLabel = Label(leaderFrame, text="Top Highscores:")
+alltimeLabel.config(font=("Changa", 12), bg="#f4f4f4", fg="#6c6c6c")
+alltimeLabel.place(relx=0.3, rely=0.15)
 
 
 for i in range(1,11):
