@@ -49,18 +49,20 @@ def sendMarvelRequest(request):
 
 def selectCharacter():
 	'selecteert een willekeurig character die een beschrijving heeft'
-	url = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_incredible.jpg"
-	raw_data = urllib.request.urlopen(url).read()
-	img = Image.open(io.BytesIO(raw_data))
-	image = ImageTk.PhotoImage(img)
-	imageLabel = Label(gameFrame, image=image)
-	imageLabel.place(rely=0.30, relx=0.60)
 	while True:
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
+				urlpath = characters[1]['thumbnail']['path']
+				urlextension = characters[1]['thumbnail']['extension']
+				url = f"{urlpath}/portrait_xlarge.{urlextension}"
+				raw_data = urllib.request.urlopen(url).read()
+				img = Image.open(io.BytesIO(raw_data))
+				image = ImageTk.PhotoImage(img)
+				characterImage = Label(gameFrame, image=image)
+				characterImage.place(rely=0.30, relx=0.60)
 				return character, characters
 
 
@@ -208,7 +210,7 @@ def switchToScoreboard():
 		scoreBoardLabels[index]['score'].config(text=speler[2])
 	mainMenu.pack_forget()
 	leaderFrame.pack(expand=True, fill="both")
-	
+
 def einde_spel():
 	saveScores()
 	global user
