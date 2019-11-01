@@ -54,15 +54,6 @@ def selectCharacter():
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
-		urlpath = characters[1]['thumbnail']['path']
-		urlextension = characters[1]['thumbnail']['extension']
-		url = f"{urlpath}/portrait_xlarge.{urlextension}"
-		raw_data = urllib.request.urlopen(url).read()
-		img = Image.open(io.BytesIO(raw_data))
-		image = ImageTk.PhotoImage(img)
-		characterImage = Label(gameFrame, image=image)
-		characterImage.place(rely=0.30, relx=0.60)
-
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
 				return character, characters
