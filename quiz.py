@@ -382,6 +382,12 @@ alltimeleaderBoardDate=Label(alltimeleaderFrameGrid,text="Datum", bg="#f4f4f4", 
 alltimeleaderBoardDate.grid(row=0,column=2)
 alltimeleaderBoardScore=Label(alltimeleaderFrameGrid,text="Score", bg="#f4f4f4", fg="#6c6c6c")
 alltimeleaderBoardScore.grid(row=0,column=3)
+dailyLabel = Label(leaderFrame, text="Dagelijks:", bg="#fff")
+dailyLabel.config(font=("Changa", 12), bg="#f4f4f4", fg="#6c6c6c")
+dailyLabel.place(relx=0.05, rely=0.15)
+alltimeLabel = Label(leaderFrame, text="Top Highscores")
+alltimeLabel.config(font=("Changa", 12), bg="#f4f4f4", fg="#6c6c6c")
+alltimeLabel.place(relx=0.3, rely=0.15)
 
 
 for i in range(1,11):
