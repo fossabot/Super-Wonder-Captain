@@ -202,7 +202,7 @@ def einde_spel():
 def nieuwe_vraag_delay():
 	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
 	time.sleep(1)
-	if (vragen_gesteld == 10):
+	if (vragen_gesteld == 3):
 		einde_spel()  # TODO
 	else:
 		nextQuestion()
