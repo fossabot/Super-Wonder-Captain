@@ -13,6 +13,7 @@ import urllib.parse
 from PIL import Image, ImageTk
 import io
 from datetime import datetime
+from tkinter.messagebox import showinfo
 
 window = Tk()
 #window.iconbitmap(r'marvelicon.bmp')
@@ -162,9 +163,12 @@ def newGame():
 def switchToIntro():
 	'switcht naar de intro, en update de naam die wordt weergegeven.'
 	global user
+	user = nameEntry.get()
+	if(len(user)==0):
+		showinfo("Window", "Voer een naam in.")
+		return
 	mainMenu.pack_forget()
 	introFrame.pack(expand=True, fill='both')
-	user = nameEntry.get()
 	introLabel.config(text=f'''Hoi {user}, welkom bij de quiz!
 	Probeer met zo min mogelijk hints de superheld te raden.
 	Je kan maximaal 15 punten per vraag krijgen.
@@ -257,7 +261,7 @@ def nextQuestion():
 
 def displayAantalvragen():
 	'geeft het aantal vragen rechtsonder weer'
-    aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
+	aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
 
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
