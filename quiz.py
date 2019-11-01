@@ -282,6 +282,7 @@ nameLabel.config(font=("Changa", 12))
 
 nameEntryText = StringVar()
 nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2", textvariable=nameEntryText)
+nameEntry.bind('<Return>', (lambda event: switchToIntro()))
 nameEntry.config(font=("Changa", 12))
 
 def character_limit(entry_text):
