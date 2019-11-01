@@ -57,14 +57,6 @@ def selectCharacter():
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
 				return character, characters
-		urlpath = characters[1]['thumbnail']['path']
-		urlextension = characters[1]['thumbnail']['extension']
-		url = f"{urlpath}/portrait_xlarge.{urlextension}"
-		raw_data = urllib.request.urlopen(url).read()
-		img = Image.open(io.BytesIO(raw_data))
-		image = ImageTk.PhotoImage(img)
-		characterImage = Label(gameFrame, image=image)
-		characterImage.place(rely=0.30, relx=0.60)
 
 def selectNames(characters, exclude):
 	'selecteert de namen die gebruikt worden bij multiplechoice'
@@ -92,7 +84,7 @@ def guiData():
 	urlextension = character['thumbnail']['extension']
 	url = f"{urlpath}/portrait_xlarge.{urlextension}"
 	raw_data = urllib.request.urlopen(url).read()
-	img = Image.open(io.BytesIO(raw_data))
+	img = raw_data
 	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
 
 # print(guiData())
@@ -123,6 +115,9 @@ def displayCharacter():
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 		buttons[id].config(state='normal')
+	image = ImageTk.PhotoImage(Image.open(io.BytesIO(currentQuestion['img'])))
+	characterImage.config(image=image)
+	characterImage.image=image
 
 def saveScores():
 	'slaat de score op in de SQLite database'
@@ -234,7 +229,7 @@ Je hebt een score behaald van {score}''')
 def nieuwe_vraag_delay():
 	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
 	time.sleep(1)
-	if (vragen_gesteld == 3):
+	if (vragen_gesteld == 10):
 		einde_spel()
 	else:
 		nextQuestion()
@@ -355,6 +350,9 @@ aantalvragen.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd=
 scoreLabel = Label(gameFrame, text="<SCORE>")
 scoreLabel.place(relx=0.02, rely=0.9, anchor=W)
 scoreLabel.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+
+characterImage = Label(gameFrame, image=PhotoImage(file="marvel-login-screen.png"))
+characterImage.place(rely=0.30, relx=0.60)
 
 leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
 leaderFrameBackgroundImage = PhotoImage(file="marvel-quiz-background.png")
