@@ -94,7 +94,10 @@ def bufferVraag():
 	questionBuffer.append(guiData())
 
 def displayDescription():
-	description.config(text="currentQuestion['description']")
+	global score
+	description.config(text=currentQuestion['description'])
+	hintButton.config(state=DISABLED)
+	score-=3
 
 def startBufferThread():
 	threading.Thread(target=bufferVraag).start()
@@ -266,6 +269,9 @@ def nextQuestion():
 	displayCharacter()
 	displayScore()
 	displayAantalvragen()
+	description.config(text="")
+	hintButton.config(state='normal')
+	
 
 def displayAantalvragen():
     aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
@@ -350,6 +356,8 @@ for i in range(10):
 description = Label(gameFrame, text="<DESC>")
 description.place(relx=0.15, rely=0.1, anchor=CENTER)
 description.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+hintButton = Button(gameFrame, text="Hint",command=displayDescription)
+hintButton.place(relx=0.5, rely=0.5)
 aantalvragen = Label(gameFrame, text="<VRAGEN>")
 aantalvragen.place(relx=0.5, rely=0.9, anchor=CENTER)
 aantalvragen.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
