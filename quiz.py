@@ -83,7 +83,7 @@ def guiData():
 		comicsNames.append(comic['name'])
 	urlpath = character['thumbnail']['path']
 	urlextension = character['thumbnail']['extension']
-	url = f"{urlpath}/portrait_xlarge.{urlextension}"
+	url = f"{urlpath}/landscape_incredible.{urlextension}"
 	raw_data = urllib.request.urlopen(url).read()
 	img = raw_data
 	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
@@ -355,7 +355,7 @@ scoreLabel.place(relx=0.02, rely=0.9, anchor=W)
 scoreLabel.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 
 characterImage = Label(gameFrame, image=PhotoImage(file="marvel-login-screen.png"))
-characterImage.place(rely=0.30, relx=0.60)
+characterImage.place(rely=0.30, relx=0.50)
 
 leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
 leaderFrameBackgroundImage = PhotoImage(file="marvel-quiz-background.png")
