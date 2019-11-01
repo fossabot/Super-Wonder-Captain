@@ -57,6 +57,14 @@ def selectCharacter():
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
 				return character, characters
+		urlpath = characters[1]['thumbnail']['path']
+		urlextension = characters[1]['thumbnail']['extension']
+		url = f"{urlpath}/portrait_xlarge.{urlextension}"
+		raw_data = urllib.request.urlopen(url).read()
+		img = Image.open(io.BytesIO(raw_data))
+		image = ImageTk.PhotoImage(img)
+		characterImage = Label(gameFrame, image=image)
+		characterImage.place(rely=0.30, relx=0.60)
 
 def selectNames(characters, exclude):
 	'selecteert de namen die gebruikt worden bij multiplechoice'
@@ -111,7 +119,6 @@ def initBuffer():
 	startBufferThread()
 	startBufferThread()
 
-
 def displayCharacter():
 	'zet nieuwe vraag in het frame'
 	global currentQuestion
@@ -119,8 +126,6 @@ def displayCharacter():
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 		buttons[id].config(state='normal')
-	image = ImageTk.PhotoImage(currentQuestion['img'])
-	characterImage.config(image=image)
 
 def saveScores():
 	'slaat de score op in de SQLite database'
@@ -129,7 +134,6 @@ def saveScores():
 	cursor,connection=connectSqlite()
 	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
 	connection.commit()
-
 
 def dailyHighscores():
 	'haalt de highscores uit de database'
@@ -143,7 +147,6 @@ def alltimeHighscores():
 	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
 	data = cursor.fetchall()
 	return data
-
 
 # Tkinter GUI
 def newGame():
@@ -235,7 +238,7 @@ def nieuwe_vraag_delay():
 	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
 	time.sleep(1)
 	if (vragen_gesteld == 3):
-		einde_spel()  # TODO
+		einde_spel()
 	else:
 		nextQuestion()
 
@@ -331,10 +334,6 @@ gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
-characterImage = Label(gameFrame, image=PhotoImage(file="marvel-login-screen.png"))
-characterImage.place(rely=0.30, relx=0.60)
-
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
