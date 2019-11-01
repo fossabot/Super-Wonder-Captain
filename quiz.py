@@ -211,6 +211,13 @@ def switchToScoreboard():
 	
 def einde_spel():
 	saveScores()
+	global user
+	gameFrame.pack_forget()
+	endFrame.pack(expand=True, fill='both')
+	user = nameEntry.get()
+	endLabel.config(text=f'''Dit is het einde van de Quiz! Bedankt voor het spelen! 
+Je hebt een score behaald van {score}''')
+	endLabel.config(font="Changa")
 
 def nieuwe_vraag_delay():
 	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
@@ -313,7 +320,6 @@ gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
