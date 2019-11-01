@@ -165,7 +165,7 @@ def switchToIntro():
 	global user
 	user = nameEntry.get()
 	if(len(user)==0):
-		showinfo("Window", "Voer een naam in.")
+		showinfo("Naam", "Voer een naam in.")
 		return
 	mainMenu.pack_forget()
 	introFrame.pack(expand=True, fill='both')
