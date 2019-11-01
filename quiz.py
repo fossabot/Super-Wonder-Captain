@@ -348,8 +348,8 @@ for i in range(10):
 	actionButton.grid(row=i, pady=(5, 5))
 	buttons.append(actionButton)
 
-description = Label(gameFrame, text="<DESC>")
-description.place(relx=0.02, rely=0.12)
+description = Label(gameFrame, text="<DESC>", wraplength=500)
+description.place(relx=0.3, rely=0.12, anchor=CENTER)
 description.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 hintButton = Button(gameFrame, text="Hint (-3 Punten)",command=displayDescription)
 hintButton.place(relx=0.6, rely=0.04)
