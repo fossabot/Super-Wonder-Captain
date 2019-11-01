@@ -72,6 +72,7 @@ def guiData():
 	'geeft de informatie die nodig is per character'
 	character, characters = selectCharacter()
 	name = character['name']
+	beschrijving = character['description']
 	names = selectNames(characters, name)
 	replace_regex = re.compile(re.escape(name), re.IGNORECASE)  # zoeken zonder op hoofdletters te letten.
 	description = replace_regex.sub('<naam>', character['description'])
@@ -92,6 +93,8 @@ def bufferVraag():
 	'zet de nieuwe vraag in de buffer.'
 	questionBuffer.append(guiData())
 
+def displayDescription():
+	description.config(text="currentQuestion['description']")
 
 def startBufferThread():
 	threading.Thread(target=bufferVraag).start()
@@ -198,7 +201,7 @@ def switchToMenu3():
 
 def displayScore():
 	'update de score op het scherm.'
-	scoreLabel.config(text=score)
+	scoreLabel.config(text="Score: "+str(score))
 
 def switchToScoreboard():
 	spelers=dailyHighscores()
@@ -360,38 +363,38 @@ leaderFrameBackgroundLabel = Label(leaderFrame, image=leaderFrameBackgroundImage
 leaderFrameBackgroundLabel.place(x=0, y=0, relwidth=1, relheight=1)
 leaderFrameBackButton = Button(leaderFrame, text="MENU", command=switchToMenu)
 leaderFrameBackButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
-leaderFrameBackButton.place(relx=0.05, rely=0.1)
-dailyleaderFrameGrid=Frame(leaderFrame)
+leaderFrameBackButton.place(relx=0.02, rely=0.02)
+dailyleaderFrameGrid=Frame(leaderFrame, bg="#f4f4f4", borderwidth=2, relief="groove")
 dailyleaderFrameGrid.place(relx=0.05,rely=0.2)
-dailyleaderBoardName=Label(dailyleaderFrameGrid,text="Naam")
+dailyleaderBoardName=Label(dailyleaderFrameGrid,text="Naam", bg="#f4f4f4", fg="#6c6c6c")
 dailyleaderBoardName.grid(row=0,column=1)
-dailyleaderBoardDate=Label(dailyleaderFrameGrid,text="Datum")
+dailyleaderBoardDate=Label(dailyleaderFrameGrid,text="Datum", bg="#f4f4f4", fg="#6c6c6c")
 dailyleaderBoardDate.grid(row=0,column=2)
-dailyleaderBoardScore=Label(dailyleaderFrameGrid,text="Score")
+dailyleaderBoardScore=Label(dailyleaderFrameGrid,text="Score", bg="#f4f4f4", fg="#6c6c6c")
 dailyleaderBoardScore.grid(row=0,column=3)
-alltimeleaderFrameGrid=Frame(leaderFrame)
+alltimeleaderFrameGrid=Frame(leaderFrame, bg="#f4f4f4", borderwidth=2, relief="groove")
 alltimeleaderFrameGrid.place(relx=0.3,rely=0.2)
-alltimeleaderBoardName=Label(alltimeleaderFrameGrid,text="Naam")
+alltimeleaderBoardName=Label(alltimeleaderFrameGrid,text="Naam", bg="#f4f4f4", fg="#6c6c6c")
 alltimeleaderBoardName.grid(row=0,column=1)
-alltimeleaderBoardDate=Label(alltimeleaderFrameGrid,text="Datum")
+alltimeleaderBoardDate=Label(alltimeleaderFrameGrid,text="Datum", bg="#f4f4f4", fg="#6c6c6c")
 alltimeleaderBoardDate.grid(row=0,column=2)
-alltimeleaderBoardScore=Label(alltimeleaderFrameGrid,text="Score")
+alltimeleaderBoardScore=Label(alltimeleaderFrameGrid,text="Score", bg="#f4f4f4", fg="#6c6c6c")
 alltimeleaderBoardScore.grid(row=0,column=3)
 
 
 for i in range(1,11):
-	leaderBoardName=Label(dailyleaderFrameGrid,text="")
+	leaderBoardName=Label(dailyleaderFrameGrid,text="", bg="#f4f4f4", fg="#6c6c6c")
 	leaderBoardName.grid(row=i,column=1,padx=(10,10))
-	leaderBoardDate=Label(dailyleaderFrameGrid,text="")
+	leaderBoardDate=Label(dailyleaderFrameGrid,text="", bg="#f4f4f4", fg="#6c6c6c")
 	leaderBoardDate.grid(row=i,column=2,padx=(10,10))
-	leaderBoardScore=Label(dailyleaderFrameGrid,text="")
+	leaderBoardScore=Label(dailyleaderFrameGrid,text="", bg="#f4f4f4", fg="#6c6c6c")
 	leaderBoardScore.grid(row=i,column=3,padx=(10,10))
 	dailyScoreBoardLabels.append({"name":leaderBoardName,"date":leaderBoardDate,"score":leaderBoardScore})
-	leaderBoardName=Label(alltimeleaderFrameGrid,text="")
+	leaderBoardName=Label(alltimeleaderFrameGrid,text="", bg="#f4f4f4", fg="#6c6c6c")
 	leaderBoardName.grid(row=i,column=1,padx=(10,10))
-	leaderBoardDate=Label(alltimeleaderFrameGrid,text="")
+	leaderBoardDate=Label(alltimeleaderFrameGrid,text="", bg="#f4f4f4", fg="#6c6c6c")
 	leaderBoardDate.grid(row=i,column=2,padx=(10,10))
-	leaderBoardScore=Label(alltimeleaderFrameGrid,text="")
+	leaderBoardScore=Label(alltimeleaderFrameGrid,text="", bg="#f4f4f4", fg="#6c6c6c")
 	leaderBoardScore.grid(row=i,column=3,padx=(10,10))
 	alltimeScoreBoardLabels.append({"name":leaderBoardName,"date":leaderBoardDate,"score":leaderBoardScore})
 
