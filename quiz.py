@@ -150,18 +150,7 @@ def alltimeHighscores():
 	data = cursor.fetchall()
 	return data
 
-# Tkinter GUI
 def newGame():
-	'gameFrame in beeld brengen, score en aantal vragen beantwoord resetten'
-	global score
-	global vragen_gesteld
-	vragen_gesteld = 0
-	score = 0
-	mainMenu.pack_forget()
-	gameFrame.pack(expand=True, fill="both")
-	nextQuestion()
-
-def newGame2():
 	'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
 	global score
 	global vragen_gesteld
@@ -172,6 +161,7 @@ def newGame2():
 	nextQuestion()
 
 def switchToIntro():
+	'switcht naar de intro, en update de naam die wordt weergegeven.'
 	global user
 	mainMenu.pack_forget()
 	introFrame.pack(expand=True, fill='both')
@@ -182,15 +172,6 @@ def switchToIntro():
 	Je krijgt 3 minpunten voor een hint en 5 minpunten voor een fout antwoord.
 	Succes!''')
 	introLabel.config(font="Changa")
-
-def einde_spel():
-	global user
-	gameFrame.pack_forget()
-	endFrame.pack(expand=True, fill='both')
-	user = nameEntry.get()
-	endLabel.config(text=f'''Dit is het einde van de Quiz! Bedankt voor het spelen! 
-Je hebt een score behaald van {score}''')
-	endLabel.config(font="Changa")
 
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
@@ -211,6 +192,7 @@ def displayScore():
 	scoreLabel.config(text="Score: "+str(score))
 
 def switchToScoreboard():
+	'update het scoreboard, en geeft de informatie weer.'
 	spelers=dailyHighscores()
 	for index,speler in enumerate(spelers):
 		date = datetime.fromtimestamp(speler[1]).strftime("%H:%M:%S")
@@ -227,8 +209,8 @@ def switchToScoreboard():
 	leaderFrame.pack(expand=True, fill="both")
 
 def einde_spel():
+	'slaat de score op, en geeft het eindframe'
 	saveScores()
-	global user
 	gameFrame.pack_forget()
 	endFrame.pack(expand=True, fill='both')
 	user = nameEntry.get()
@@ -275,6 +257,7 @@ def nextQuestion():
 	
 
 def displayAantalvragen():
+	'geeft het aantal vragen rechtsonder weer'
     aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
 
 window.title("Marvel Quiz")
@@ -331,7 +314,7 @@ menuButton3 = Button(endFrame, text="TERUG NAAR MENU", command=switchToMenu3)
 menuButton3.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
 menuButton3.place(relx=0.15, rely=0.60)
 
-startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame2)
+startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame)
 startButton2.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
 startButton2.place(relx=0.13, rely=0.45)
 
