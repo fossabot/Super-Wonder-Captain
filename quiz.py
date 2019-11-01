@@ -280,8 +280,15 @@ startFrame.pack(side=LEFT, anchor=W, padx=(45, 0))
 nameLabel = Label(startFrame, text="Naam:", bg="#fff")
 nameLabel.config(font=("Changa", 12))
 
-nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2")
+nameEntryText = StringVar()
+nameEntry = Entry(startFrame, bg="#fafafa", relief="groove", bd="2", textvariable=nameEntryText)
 nameEntry.config(font=("Changa", 12))
+
+def character_limit(entry_text):
+	if len(entry_text.get()) > 0:
+		entry_text.set(entry_text.get()[:15])
+
+nameEntryText.trace("w", lambda *args: character_limit(nameEntryText))
 
 startButton = Button(startFrame, text="START", width=15, command=switchToIntro)
 startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
