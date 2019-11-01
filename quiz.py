@@ -98,6 +98,7 @@ def displayDescription():
 	description.config(text=currentQuestion['description'])
 	hintButton.config(state=DISABLED)
 	score-=3
+	displayScore()
 
 def startBufferThread():
 	threading.Thread(target=bufferVraag).start()
