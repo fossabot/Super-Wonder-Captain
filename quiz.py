@@ -13,6 +13,7 @@ import urllib.request
 import urllib.parse
 from PIL import Image, ImageTk
 import io
+from datetime import datetime
 
 window = Tk()
 #window.iconbitmap(r'marvelicon.bmp')
@@ -24,10 +25,14 @@ action_man = pyglet.font.load('Changa')
 currentQuestion = None
 score = 0
 vragen_gesteld = 0
-connection = sqlite3.connect('quiz.db')
-cursor = connection.cursor()
+def connectSqlite():
+	connection = sqlite3.connect('quiz.db')
+	cursor = connection.cursor()
+	return cursor,connection
+cursor,connection=connectSqlite()
 cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
 questionBuffer = []
+scoreBoardLabels=[]
 user = ""
 
 
@@ -55,7 +60,7 @@ def selectCharacter():
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
 		for character in characters:
-			if len(character['description']) > 0:
+			if (len(character['description']) > 0) and (len(character['description']) < 200):
 				return character, characters
 
 
@@ -117,9 +122,11 @@ def displayCharacter():
 
 # TODO: afbeelding weergeven
 
-def saveScores(naam, score):
+def saveScores():
 	'slaat de score op in de SQLite database'
+	naam=nameEntry.get()
 	timestamp = math.floor(time.time())
+	cursor,connection=connectSqlite()
 	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
 	connection.commit()
 
@@ -175,6 +182,7 @@ Je hebt een score behaald van {score}''')
 
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
+	leaderFrame.pack_forget()
 	gameFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
@@ -190,11 +198,24 @@ def displayScore():
 	'update de score op het scherm.'
 	scoreLabel.config(text=score)
 
+def switchToScoreboard():
+	spelers=highscores()
+	for index,speler in enumerate(spelers):
+		print(speler)
+		date = datetime.fromtimestamp(speler[1]).strftime("%Y-%m-%d, %H:%M:%S")
+		scoreBoardLabels[index]['name'].config(text=speler[0])
+		scoreBoardLabels[index]['date'].config(text=date)
+		scoreBoardLabels[index]['score'].config(text=speler[2])
+	mainMenu.pack_forget()
+	leaderFrame.pack(expand=True, fill="both")
+	
+def einde_spel():
+	saveScores()
 
 def nieuwe_vraag_delay():
 	'wacht een seconden, en geeft de volgende vraag, of stopt het spel.'
 	time.sleep(1)
-	if (vragen_gesteld == 10):
+	if (vragen_gesteld == 3):
 		einde_spel()  # TODO
 	else:
 		nextQuestion()
@@ -253,7 +274,7 @@ nameEntry.config(font=("Changa", 12))
 startButton = Button(startFrame, text="START", width=15, command=switchToIntro)
 startButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
-leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15)
+leaderBoardButton = Button(startFrame, text="LEADERBOARD", width=15, command=switchToScoreboard)
 leaderBoardButton.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 
 # Grid config / layout
@@ -321,7 +342,26 @@ scoreLabel.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0
 leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
 leaderFrameBackgroundImage = PhotoImage(file="marvel-login-screen.png")
 leaderFrameBackgroundLabel = Label(leaderFrame, image=leaderFrameBackgroundImage)
-
+leaderFrameBackgroundLabel.place(x=0, y=0, relwidth=1, relheight=1)
+leaderFrameBackButton = Button(leaderFrame, text="MENU", command=switchToMenu)
+leaderFrameBackButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
+leaderFrameBackButton.place(relx=0.05, rely=0.32)
+leaderFrameGrid=Frame(leaderFrame)
+leaderFrameGrid.place(relx=0.1,rely=0.4)
+leaderBoardName=Label(leaderFrameGrid,text="Naam")
+leaderBoardName.grid(row=0,column=1)
+leaderBoardDate=Label(leaderFrameGrid,text="Datum")
+leaderBoardDate.grid(row=0,column=2)
+leaderBoardScore=Label(leaderFrameGrid,text="Score")
+leaderBoardScore.grid(row=0,column=3)
+for i in range(1,11):
+	leaderBoardName=Label(leaderFrameGrid,text="")
+	leaderBoardName.grid(row=i,column=1,padx=(10,10))
+	leaderBoardDate=Label(leaderFrameGrid,text="")
+	leaderBoardDate.grid(row=i,column=2,padx=(10,10))
+	leaderBoardScore=Label(leaderFrameGrid,text="")
+	leaderBoardScore.grid(row=i,column=3,padx=(10,10))
+	scoreBoardLabels.append({"name":leaderBoardName,"date":leaderBoardDate,"score":leaderBoardScore})
 
 initBuffer()
 switchToMenu()
