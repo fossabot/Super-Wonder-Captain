@@ -32,7 +32,9 @@ def connectSqlite():
 cursor,connection=connectSqlite()
 cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
 questionBuffer = []
-scoreBoardLabels=[]
+alltimeScoreBoardLabels=[]
+dailyScoreBoardLabels=[]
+
 user = ""
 
 
@@ -49,6 +51,12 @@ def sendMarvelRequest(request):
 
 def selectCharacter():
 	'selecteert een willekeurig character die een beschrijving heeft'
+	#url = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_incredible.jpg"
+	#raw_data = urllib.request.urlopen(url).read()
+	#img = Image.open(io.BytesIO(raw_data))
+	#image = ImageTk.PhotoImage(img)
+	#imageLabel = Label(gameFrame, image=image)
+	#imageLabel.place(rely=0.30, relx=0.60)
 	while True:
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
@@ -130,7 +138,14 @@ def saveScores():
 	connection.commit()
 
 
-def highscores():
+def dailyHighscores():
+	'haalt de highscores uit de database'
+	today = datetime.utcnow().date()
+	startOfDay = datetime.timestamp(datetime(today.year, today.month, today.day))
+	cursor.execute(f'select * from scores where scores.timestamp>={startOfDay} ORDER BY scores.score DESC LIMIT 10;')
+	data = cursor.fetchall()
+	return data
+def alltimeHighscores():
 	'haalt de highscores uit de database'
 	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
 	data = cursor.fetchall()
@@ -198,13 +213,18 @@ def displayScore():
 	scoreLabel.config(text=score)
 
 def switchToScoreboard():
-	spelers=highscores()
+	spelers=dailyHighscores()
 	for index,speler in enumerate(spelers):
-		print(speler)
 		date = datetime.fromtimestamp(speler[1]).strftime("%Y-%m-%d, %H:%M:%S")
-		scoreBoardLabels[index]['name'].config(text=speler[0])
-		scoreBoardLabels[index]['date'].config(text=date)
-		scoreBoardLabels[index]['score'].config(text=speler[2])
+		dailyScoreBoardLabels[index]['name'].config(text=speler[0])
+		dailyScoreBoardLabels[index]['date'].config(text=date)
+		dailyScoreBoardLabels[index]['score'].config(text=speler[2])
+		spelers=alltimeHighscores()
+	for index,speler in enumerate(spelers):
+		date = datetime.fromtimestamp(speler[1]).strftime("%Y-%m-%d, %H:%M:%S")
+		alltimeScoreBoardLabels[index]['name'].config(text=speler[0])
+		alltimeScoreBoardLabels[index]['date'].config(text=date)
+		alltimeScoreBoardLabels[index]['score'].config(text=speler[2])
 	mainMenu.pack_forget()
 	leaderFrame.pack(expand=True, fill="both")
 
@@ -296,8 +316,8 @@ introLabel = Label(master=introFrame, bg='white', height=5)
 introLabel.place(relx=0.21, rely=0.65, anchor=CENTER)
 
 endFrame = Frame(window, height=800, width=1280, bg="#fff")
-endFrame_background = PhotoImage(file="marvel-login-screen.png")
-endFrame_background_label = Label(endFrame, image=introFrame_background)
+endFrame_background = PhotoImage(file="stan-lee-positieve-score.png")
+endFrame_background_label = Label(endFrame, image=endFrame_background)
 endFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 endLabel = Label(master=endFrame, bg='white', height=5)
 endLabel.place(relx=0.21, rely=0.55, anchor=CENTER)
@@ -344,28 +364,45 @@ scoreLabel.place(relx=0.02, rely=0.9, anchor=W)
 scoreLabel.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 
 leaderFrame = Frame(window, height=800, width=1280, bg="#fff")
-leaderFrameBackgroundImage = PhotoImage(file="marvel-login-screen.png")
+leaderFrameBackgroundImage = PhotoImage(file="marvel-quiz-background.png")
 leaderFrameBackgroundLabel = Label(leaderFrame, image=leaderFrameBackgroundImage)
 leaderFrameBackgroundLabel.place(x=0, y=0, relwidth=1, relheight=1)
 leaderFrameBackButton = Button(leaderFrame, text="MENU", command=switchToMenu)
 leaderFrameBackButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
-leaderFrameBackButton.place(relx=0.05, rely=0.32)
-leaderFrameGrid=Frame(leaderFrame)
-leaderFrameGrid.place(relx=0.1,rely=0.4)
-leaderBoardName=Label(leaderFrameGrid,text="Naam")
-leaderBoardName.grid(row=0,column=1)
-leaderBoardDate=Label(leaderFrameGrid,text="Datum")
-leaderBoardDate.grid(row=0,column=2)
-leaderBoardScore=Label(leaderFrameGrid,text="Score")
-leaderBoardScore.grid(row=0,column=3)
+leaderFrameBackButton.place(relx=0.05, rely=0.1)
+dailyleaderFrameGrid=Frame(leaderFrame)
+dailyleaderFrameGrid.place(relx=0.05,rely=0.2)
+dailyleaderBoardName=Label(dailyleaderFrameGrid,text="Naam")
+dailyleaderBoardName.grid(row=0,column=1)
+dailyleaderBoardDate=Label(dailyleaderFrameGrid,text="Datum")
+dailyleaderBoardDate.grid(row=0,column=2)
+dailyleaderBoardScore=Label(dailyleaderFrameGrid,text="Score")
+dailyleaderBoardScore.grid(row=0,column=3)
+alltimeleaderFrameGrid=Frame(leaderFrame)
+alltimeleaderFrameGrid.place(relx=0.3,rely=0.2)
+alltimeleaderBoardName=Label(alltimeleaderFrameGrid,text="Naam")
+alltimeleaderBoardName.grid(row=0,column=1)
+alltimeleaderBoardDate=Label(alltimeleaderFrameGrid,text="Datum")
+alltimeleaderBoardDate.grid(row=0,column=2)
+alltimeleaderBoardScore=Label(alltimeleaderFrameGrid,text="Score")
+alltimeleaderBoardScore.grid(row=0,column=3)
+
+
 for i in range(1,11):
-	leaderBoardName=Label(leaderFrameGrid,text="")
+	leaderBoardName=Label(dailyleaderFrameGrid,text="")
 	leaderBoardName.grid(row=i,column=1,padx=(10,10))
-	leaderBoardDate=Label(leaderFrameGrid,text="")
+	leaderBoardDate=Label(dailyleaderFrameGrid,text="")
 	leaderBoardDate.grid(row=i,column=2,padx=(10,10))
-	leaderBoardScore=Label(leaderFrameGrid,text="")
+	leaderBoardScore=Label(dailyleaderFrameGrid,text="")
 	leaderBoardScore.grid(row=i,column=3,padx=(10,10))
-	scoreBoardLabels.append({"name":leaderBoardName,"date":leaderBoardDate,"score":leaderBoardScore})
+	dailyScoreBoardLabels.append({"name":leaderBoardName,"date":leaderBoardDate,"score":leaderBoardScore})
+	leaderBoardName=Label(alltimeleaderFrameGrid,text="")
+	leaderBoardName.grid(row=i,column=1,padx=(10,10))
+	leaderBoardDate=Label(alltimeleaderFrameGrid,text="")
+	leaderBoardDate.grid(row=i,column=2,padx=(10,10))
+	leaderBoardScore=Label(alltimeleaderFrameGrid,text="")
+	leaderBoardScore.grid(row=i,column=3,padx=(10,10))
+	alltimeScoreBoardLabels.append({"name":leaderBoardName,"date":leaderBoardDate,"score":leaderBoardScore})
 
 initBuffer()
 switchToMenu()
