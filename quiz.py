@@ -119,6 +119,9 @@ def displayCharacter():
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 		buttons[id].config(state='normal')
+	for id in range(len(buttons)):
+		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
+		buttons[id].config(state='normal')
 	image = ImageTk.PhotoImage(Image.open(io.BytesIO(currentQuestion['img'])))
 	characterImage.config(image=image)
 	characterImage.image=image
@@ -207,7 +210,7 @@ def displayScore():
 def switchToScoreboard():
 	spelers=dailyHighscores()
 	for index,speler in enumerate(spelers):
-		date = datetime.fromtimestamp(speler[1]).strftime("%Y-%m-%d, %H:%M:%S")
+		date = datetime.fromtimestamp(speler[1]).strftime("%H:%M:%S")
 		dailyScoreBoardLabels[index]['name'].config(text=speler[0])
 		dailyScoreBoardLabels[index]['date'].config(text=date)
 		dailyScoreBoardLabels[index]['score'].config(text=speler[2])
