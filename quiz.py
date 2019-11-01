@@ -55,7 +55,7 @@ def selectCharacter():
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
 		for character in characters:
-			if (len(character['description']) > 0) and (len(character['description']) < 200):
+			if (len(character['description']) > 0) and (len(character['description']) < 200) and (character['thumbnail']['path']!="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available"):
 				return character, characters
 
 def selectNames(characters, exclude):
