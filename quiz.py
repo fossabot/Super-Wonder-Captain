@@ -142,7 +142,9 @@ def saveScores():
 
 def dailyHighscores():
 	'haalt de highscores uit de database'
-	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
+	today = datetime.utcnow().date()
+	startOfDay = datetime.timestamp(datetime(today.year, today.month, today.day))
+	cursor.execute(f'select * from scores where scores.timestamp>={startOfDay} ORDER BY scores.score DESC LIMIT 10;')
 	data = cursor.fetchall()
 	return data
 def alltimeHighscores():
