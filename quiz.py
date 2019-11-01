@@ -84,6 +84,7 @@ def guiData():
 	urlpath = character['thumbnail']['path']
 	urlextension = character['thumbnail']['extension']
 	url = f"{urlpath}/portrait_xlarge.{urlextension}"
+	print(url)
 	raw_data = urllib.request.urlopen(url).read()
 	img = raw_data
 	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
