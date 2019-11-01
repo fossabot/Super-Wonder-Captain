@@ -53,18 +53,18 @@ def selectCharacter():
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
+		urlpath = character['thumbnail']['path']
+		urlextension = character['thumbnail']['extension']
+		url = f"{urlpath}/portrait_xlarge.{urlextension}"
+		raw_data = urllib.request.urlopen(url).read()
+		img = Image.open(io.BytesIO(raw_data))
+		image = ImageTk.PhotoImage(img)
+		characterImage = Label(gameFrame, image=image)
+		characterImage.place(rely=0.30, relx=0.60)
+
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
-				urlpath = characters[1]['thumbnail']['path']
-				urlextension = characters[1]['thumbnail']['extension']
-				url = f"{urlpath}/portrait_xlarge.{urlextension}"
-				raw_data = urllib.request.urlopen(url).read()
-				img = Image.open(io.BytesIO(raw_data))
-				image = ImageTk.PhotoImage(img)
-				characterImage = Label(gameFrame, image=image)
-				characterImage.place(rely=0.30, relx=0.60)
 				return character, characters
-
 
 def selectNames(characters, exclude):
 	'selecteert de namen die gebruikt worden bij multiplechoice'
@@ -90,7 +90,6 @@ def guiData():
 	for comic in comics:
 		comicsNames.append(comic['name'])
 	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames}
-
 
 # print(guiData())
 def bufferVraag():
@@ -121,8 +120,6 @@ def displayCharacter():
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 		buttons[id].config(state='normal')
-
-# TODO: afbeelding weergeven
 
 def saveScores():
 	'slaat de score op in de SQLite database'
@@ -246,16 +243,15 @@ def buttonClicked(id):
 		score -= 5
 	displayScore()
 
-
 def nextQuestion():
-    'geeft de volgende vraag, en update de punten'
-    global score
-    global vragen_gesteld
-    vragen_gesteld += 1
-    score += 15
-    displayCharacter()
-    displayScore()
-    displayAantalvragen()
+	'geeft de volgende vraag, en update de punten'
+	global score
+	global vragen_gesteld
+	vragen_gesteld += 1
+	score += 15
+	displayCharacter()
+	displayScore()
+	displayAantalvragen()
 
 def displayAantalvragen():
     aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
