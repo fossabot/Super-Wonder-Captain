@@ -54,8 +54,8 @@ def selectCharacter():
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
 
-		urlpath = characters['thumbnail']['path']
-		urlextension = characters['thumbnail']['extension']
+		urlpath = characters[1]['thumbnail']['path']
+		urlextension = characters[1]['thumbnail']['extension']
 		url = f"{urlpath}/portrait_xlarge.{urlextension}"
 		raw_data = urllib.request.urlopen(url).read()
 		img = Image.open(io.BytesIO(raw_data))
