@@ -246,6 +246,7 @@ def buttonClicked(id):
 	correct = currentQuestion['name']
 	if correct == nameClicked:
 		buttons[id].config(bg="#00FF00")
+		score += 15
 		for buttonId in range(len(buttons)):
 			buttons[buttonId].config(state=DISABLED)
 		threading.Thread(target=nieuwe_vraag_delay).start()
@@ -260,7 +261,6 @@ def nextQuestion():
 	global score
 	global vragen_gesteld
 	vragen_gesteld += 1
-	score += 15
 	displayCharacter()
 	displayScore()
 	displayAantalvragen()
