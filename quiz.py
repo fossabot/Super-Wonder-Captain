@@ -60,17 +60,6 @@ def selectCharacter():
 	while True:
 		randomNumber = random.randint(0, 1400)
 		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
-
-		urlpath = character['thumbnail']['path']
-		urlextension = character['thumbnail']['extension']
-		url = f"{urlpath}/portrait_xlarge.{urlextension}"
-		raw_data = urllib.request.urlopen(url).read()
-		img = Image.open(io.BytesIO(raw_data))
-		image = ImageTk.PhotoImage(img)
-		characterImage = Label(gameFrame, image=image)
-		characterImage.place(rely=0.30, relx=0.60)
-
-
 		for character in characters:
 			if (len(character['description']) > 0) and (len(character['description']) < 200):
 				return character, characters
@@ -98,7 +87,12 @@ def guiData():
 	comicsNames = []
 	for comic in comics:
 		comicsNames.append(comic['name'])
-	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames}
+	urlpath = character['thumbnail']['path']
+	urlextension = character['thumbnail']['extension']
+	url = f"{urlpath}/portrait_xlarge.{urlextension}"
+	raw_data = urllib.request.urlopen(url).read()
+	img = Image.open(io.BytesIO(raw_data))
+	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
 
 # print(guiData())
 def bufferVraag():
@@ -129,6 +123,8 @@ def displayCharacter():
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 		buttons[id].config(state='normal')
+	image = ImageTk.PhotoImage(currentQuestion['img'])
+	characterImage.config(image=image)
 
 def saveScores():
 	'slaat de score op in de SQLite database'
@@ -339,6 +335,10 @@ gameFrame = Frame(window, height=800, width=1280, bg="#fff")
 gameFrame_background = PhotoImage(file="marvel-quiz-background.png")
 gameFrame_background_label = Label(gameFrame, image=gameFrame_background)
 gameFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+characterImage = Label(gameFrame, image=PhotoImage(file="marvel-login-screen.png"))
+characterImage.place(rely=0.30, relx=0.60)
+
 
 menuButton = Button(gameFrame, text="MENU", command=switchToMenu)
 menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
