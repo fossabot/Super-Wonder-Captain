@@ -355,7 +355,7 @@ for i in range(10):
 	buttons.append(actionButton)
 
 description = Label(gameFrame, text="<DESC>")
-description.place(relx=0.05, rely=0.14)
+description.place(relx=0.02, rely=0.12)
 description.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0")
 hintButton = Button(gameFrame, text="Hint (-3 Punten)",command=displayDescription)
 hintButton.place(relx=0.6, rely=0.04)
@@ -381,7 +381,7 @@ dailyleaderFrameGrid=Frame(leaderFrame, bg="#f4f4f4", borderwidth=2, relief="gro
 dailyleaderFrameGrid.place(relx=0.05,rely=0.2)
 dailyleaderBoardName=Label(dailyleaderFrameGrid,text="Naam", bg="#f4f4f4", fg="#6c6c6c")
 dailyleaderBoardName.grid(row=0,column=1)
-dailyleaderBoardDate=Label(dailyleaderFrameGrid,text="Datum", bg="#f4f4f4", fg="#6c6c6c")
+dailyleaderBoardDate=Label(dailyleaderFrameGrid,text="Tijd", bg="#f4f4f4", fg="#6c6c6c")
 dailyleaderBoardDate.grid(row=0,column=2)
 dailyleaderBoardScore=Label(dailyleaderFrameGrid,text="Score", bg="#f4f4f4", fg="#6c6c6c")
 dailyleaderBoardScore.grid(row=0,column=3)
