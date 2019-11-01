@@ -164,6 +164,15 @@ def switchToIntro():
 	Succes!''')
 	introLabel.config(font="Changa")
 
+def einde_spel():
+	global user
+	gameFrame.pack_forget()
+	endFrame.pack(expand=True, fill='both')
+	user = nameEntry.get()
+	endLabel.config(text=f'''Dit is het einde van de Quiz! Bedankt voor het spelen! 
+Je hebt een score behaald van {score}''')
+	endLabel.config(font="Changa")
+
 def switchToMenu():
 	'stopt spel, en gaat naar menu'
 	gameFrame.pack_forget()
@@ -171,6 +180,10 @@ def switchToMenu():
 
 def switchToMenu2():
 	introFrame.pack_forget()
+	mainMenu.pack(expand=True, fill="both")
+
+def switchToMenu3():
+	endFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
 def displayScore():
@@ -256,9 +269,20 @@ introFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 introLabel = Label(master=introFrame, bg='white', height=5)
 introLabel.place(relx=0.21, rely=0.65, anchor=CENTER)
 
+endFrame = Frame(window, height=800, width=1280, bg="#fff")
+endFrame_background = PhotoImage(file="marvel-login-screen.png")
+endFrame_background_label = Label(endFrame, image=introFrame_background)
+endFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
+endLabel = Label(master=endFrame, bg='white', height=5)
+endLabel.place(relx=0.21, rely=0.55, anchor=CENTER)
+
 menuButton2 = Button(introFrame, text="TERUG NAAR MENU", command=switchToMenu2)
 menuButton2.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 menuButton2.place(relx=0.25, rely=0.45)
+
+menuButton3 = Button(endFrame, text="TERUG NAAR MENU", command=switchToMenu3)
+menuButton3.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
+menuButton3.place(relx=0.15, rely=0.60)
 
 startButton2 = Button(introFrame, text="START SPEL", width=15, command=newGame2)
 startButton2.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
