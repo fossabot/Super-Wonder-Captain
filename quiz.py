@@ -1,97 +1,21 @@
-import hashlib
 import time
 from tkinter import *
-import json
-import random
 import threading
-import re
-import sqlite3
-import math
 import pyglet
-import urllib.request
-import urllib.parse
-from PIL import Image, ImageTk
-import io
-from datetime import datetime
 from tkinter.messagebox import showinfo
-
-window = Tk()
-#window.iconbitmap(r'marvelicon.bmp')
-logo = PhotoImage(file='marvelicon.gif')
-window.call('wm', 'iconphoto', window._w, logo)
-pyglet.font.add_file('changa.ttf')
-action_man = pyglet.font.load('Changa')
-
-currentQuestion = None
-score = 0
-vragen_gesteld = 0
-def connectSqlite():
-	connection = sqlite3.connect('quiz.db')
-	cursor = connection.cursor()
-	return cursor,connection
-cursor,connection=connectSqlite()
-cursor.execute('CREATE TABLE IF NOT EXISTS `scores` (`name` TEXT,`timestamp` INT(10),`score` INT(3));')
+from API import questionInfo
+from scores import highScores,saveScore
 questionBuffer = []
 alltimeScoreBoardLabels=[]
 dailyScoreBoardLabels=[]
-
+currentQuestion = None
+score = 0
+vragen_gesteld = 0
 user = ""
 
-def sendMarvelRequest(request):
-	'stuurt een aanvraag naar de Marvel API'
-	loginInfo = json.load(open('apikey.json', 'r'))
-	stamp = str(time.time())
-	pubkey = loginInfo['pubkey']
-	privatekey = loginInfo['privatekey']
-	hashString = stamp + privatekey + pubkey
-	hash = hashlib.md5(hashString.encode()).hexdigest()
-	jsondata=urllib.request.urlopen(f'https://gateway.marvel.com/v1/public/{request}&ts={stamp}&apikey={pubkey}&hash={hash}').read()
-	return json.loads(jsondata)['data']['results']
-
-def selectCharacter():
-	'selecteert een willekeurig character die een beschrijving heeft'
-	while True:
-		randomNumber = random.randint(0, 1400)
-		characters = sendMarvelRequest(f'characters?offset={randomNumber}&orderBy=modified')
-
-		for character in characters:
-			if (len(character['description']) > 0) and (len(character['description']) < 200) and (character['thumbnail']['path']!="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available") and (character['thumbnail']['extension']=='jpg'):
-				return character, characters
-
-def selectNames(characters, exclude):
-	'selecteert de namen die gebruikt worden bij multiplechoice'
-	names = [exclude]
-	while len(names) < 10:
-		character = random.choice(characters)
-		if character['name'] not in names:
-			names.append(character['name'])
-	random.shuffle(names)
-	return names
-
-def guiData():
-	'geeft de informatie die nodig is per character'
-	character, characters = selectCharacter()
-	name = character['name']
-	beschrijving = character['description']
-	names = selectNames(characters, name)
-	replace_regex = re.compile(re.escape(name), re.IGNORECASE)  # zoeken zonder op hoofdletters te letten.
-	description = replace_regex.sub('<naam>', character['description'])
-	comics = character['comics']['items']
-	random.shuffle(comics)
-	comicsNames = []
-	for comic in comics:
-		comicsNames.append(comic['name'])
-	urlpath = character['thumbnail']['path']
-	urlextension = character['thumbnail']['extension']
-	url = f"{urlpath}/portrait_uncanny.{urlextension}"
-	raw_data = urllib.request.urlopen(url).read()
-	img = raw_data
-	return {'names': names, 'description': description, 'name': name, 'comics': comicsNames, 'img':img}
-
-# print(guiData())
 def bufferVraag():
 	'zet de nieuwe vraag in de buffer.'
-	questionBuffer.append(guiData())
+	questionBuffer.append(questionInfo())
 
 def displayDescription():
 	global score
@@ -125,30 +49,9 @@ def displayCharacter():
 	for id in range(len(buttons)):
 		buttons[id].config(text=currentQuestion['names'][id], bg="#4c4c4c")
 		buttons[id].config(state='normal')
-	image = ImageTk.PhotoImage(Image.open(io.BytesIO(currentQuestion['img'])))
+	image = currentQuestion['img']
 	characterImage.config(image=image)
 	characterImage.image=image
-
-def saveScores():
-	'slaat de score op in de SQLite database'
-	naam=nameEntry.get()
-	timestamp = math.floor(time.time())
-	cursor,connection=connectSqlite()
-	cursor.execute('INSERT INTO scores(name, timestamp, score) VALUES (?,?,?);', (naam, timestamp, score))
-	connection.commit()
-
-def dailyHighscores():
-	'haalt de highscores uit de database'
-	today = datetime.utcnow().date()
-	startOfDay = datetime.timestamp(datetime(today.year, today.month, today.day))
-	cursor.execute(f'select * from scores where scores.timestamp>={startOfDay} ORDER BY scores.score DESC LIMIT 10;')
-	data = cursor.fetchall()
-	return data
-def alltimeHighscores():
-	'haalt de highscores uit de database'
-	cursor.execute('SELECT * FROM scores ORDER BY scores.score DESC LIMIT 10;')
-	data = cursor.fetchall()
-	return data
 
 def newGame():
 	'introFrame in beeld brengen, score en aantal vragen beantwoord resetten'
@@ -177,17 +80,11 @@ def switchToIntro():
 	introLabel.config(font="Changa")
 
 def switchToMenu():
-	'stopt spel, en gaat naar menu'
-	leaderFrame.pack_forget()
-	gameFrame.pack_forget()
-	mainMenu.pack(expand=True, fill="both")
-
-def switchToMenu2():
+	'gaat naar menu'
 	introFrame.pack_forget()
-	mainMenu.pack(expand=True, fill="both")
-
-def switchToMenu3():
+	gameFrame.pack_forget()
 	endFrame.pack_forget()
+	leaderFrame.pack_forget()
 	mainMenu.pack(expand=True, fill="both")
 
 def displayScore():
@@ -196,27 +93,24 @@ def displayScore():
 
 def switchToScoreboard():
 	'update het scoreboard, en geeft de informatie weer.'
-	spelers=dailyHighscores()
+	spelers=highScores(True)
 	for index,speler in enumerate(spelers):
-		date = datetime.fromtimestamp(speler[1]).strftime("%H:%M:%S")
 		dailyScoreBoardLabels[index]['name'].config(text=speler[0])
-		dailyScoreBoardLabels[index]['date'].config(text=date)
+		dailyScoreBoardLabels[index]['date'].config(text=speler[1])
 		dailyScoreBoardLabels[index]['score'].config(text=speler[2])
-		spelers=alltimeHighscores()
+	spelers=highScores(False)
 	for index,speler in enumerate(spelers):
-		date = datetime.fromtimestamp(speler[1]).strftime("%Y-%m-%d, %H:%M:%S")
 		alltimeScoreBoardLabels[index]['name'].config(text=speler[0])
-		alltimeScoreBoardLabels[index]['date'].config(text=date)
+		alltimeScoreBoardLabels[index]['date'].config(text=speler[1])
 		alltimeScoreBoardLabels[index]['score'].config(text=speler[2])
 	mainMenu.pack_forget()
 	leaderFrame.pack(expand=True, fill="both")
 
 def einde_spel():
 	'slaat de score op, en geeft het eindframe'
-	saveScores()
+	saveScore(user, score)
 	gameFrame.pack_forget()
 	endFrame.pack(expand=True, fill='both')
-	user = nameEntry.get()
 	endLabel.config(text=f'''Dit is het einde van de Quiz! Bedankt voor het spelen! 
 Je hebt een score behaald van {score}''')
 	endLabel.config(font="Changa")
@@ -262,6 +156,15 @@ def nextQuestion():
 def displayAantalvragen():
 	'geeft het aantal vragen rechtsonder weer'
 	aantalvragen.config(text="Vraag "+str(vragen_gesteld)+"/10")
+
+
+
+window = Tk()
+#window.iconbitmap(r'marvelicon.bmp')
+logo = PhotoImage(file='marvelicon.gif')
+window.call('wm', 'iconphoto', window._w, logo)
+pyglet.font.add_file('changa.ttf')
+action_man = pyglet.font.load('Changa')
 
 window.title("Marvel Quiz")
 mainMenu = Frame(window, height=800, width=1280)
@@ -317,11 +220,11 @@ endFrame_background_label.place(x=0, y=0, relwidth=1, relheight=1)
 endLabel = Label(master=endFrame, bg='white', height=5)
 endLabel.place(relx=0.21, rely=0.55, anchor=CENTER)
 
-menuButton2 = Button(introFrame, text="TERUG NAAR MENU", command=switchToMenu2)
+menuButton2 = Button(introFrame, text="TERUG NAAR MENU", command=switchToMenu)
 menuButton2.config(font=("Changa", 10, "bold"), bg="#4c4c4c", fg="#fff", bd="0")
 menuButton2.place(relx=0.25, rely=0.45)
 
-menuButton3 = Button(endFrame, text="TERUG NAAR MENU", command=switchToMenu3)
+menuButton3 = Button(endFrame, text="TERUG NAAR MENU", command=switchToMenu)
 menuButton3.config(font=("Changa", 10, "bold"), bg="#ED1D24", fg="#fff", bd="0")
 menuButton3.place(relx=0.15, rely=0.60)
 
