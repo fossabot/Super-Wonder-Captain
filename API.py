@@ -1,3 +1,4 @@
+from tkinter.messagebox import showinfo
 from PIL import Image, ImageTk
 import hashlib
 import time
@@ -55,6 +56,14 @@ def questionInfo():
 	return {'names': names, 'description': description, 'name': name, 'img':img}
 def bufferVraag():
 	'zet de nieuwe vraag in de buffer.'
-	questionBuffer.append(questionInfo())
+	try:
+		questionBuffer.append(questionInfo())
+	except:
+		time.sleep(3)
+		bufferVraag()
 def getQuestion():
-	return questionBuffer.pop()
+	if len(questionBuffer)>0:
+		return questionBuffer.pop()
+	else:
+		showinfo("Error", "Het downloaden van de vragen is niet gelukt.\nKlik op OK om het opnieuw te proberen.")
+		return getQuestion()
