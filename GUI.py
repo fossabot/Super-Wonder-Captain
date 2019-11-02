@@ -140,7 +140,7 @@ menuButton.config(font=("Changa", 10, "bold"), bg="#f4f4f4", fg="#6c6c6c", bd="0
 menuButton.place(relx=0.04, rely=0.04,anchor=CENTER)
 
 questionContainer = Label(gameFrame, bg="#f4f4f4")
-questionContainer.place(relx=0.20, rely=0.25)
+questionContainer.place(relx=0.20, rely=0.5,anchor=CENTER)
 
 buttons = []
 for i in range(10):
