@@ -1,10 +1,13 @@
 def Window():
+	'stuurt het window object terug, zodat de game kan worden gestart'
 	return window
 
 def getName():
+	'geeft de naam van de speler terug'
 	return nameEntry.get()
 
 def showFrame(frameName):
+	'zet het correcte frame op de voorgrond'
 	mainMenu.pack_forget()
 	introFrame.pack_forget()
 	gameFrame.pack_forget()
@@ -13,9 +16,11 @@ def showFrame(frameName):
 	eval(frameName).pack(expand=True, fill='both')
 
 def setText(label,text):
+	'veranderd de text van een label/knop'
 	eval(label).config(text=text)
 
 def setDisabled(button,value):
+	'disables/enables een knop'
 	if(value):
 		state=DISABLED
 	else:
@@ -23,9 +28,11 @@ def setDisabled(button,value):
 	eval(button).config(state=state)
 
 def setBg(button,value):
+	'veranderd de achtergrond van een knop'
 	eval(button).config(bg=value)
 
 def setImage(label, image):
+	'veranderd de afbeelding van een label'
 	eval(label).config(image=image)
 	eval(label).image=image
 
