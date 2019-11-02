@@ -1,5 +1,10 @@
 from datetime import datetime
 try:
+	from tkinter import *
+except:
+	showinfo("ERROR","Tkinter is niet (correct) geinstalleerd.")
+	exit()
+try:
 	import sqlite3
 except:
 	showinfo("ERROR","sqlite3 is niet (correct) geinstalleerd.")
