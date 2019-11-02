@@ -1,5 +1,9 @@
 from datetime import datetime
-import sqlite3
+try:
+	import sqlite3
+except:
+	showinfo("ERROR","sqlite3 is niet (correct) geinstalleerd.")
+	exit()
 def connectSqlite():
 	'maakt verbinding met de sqlite database. dit is in een aparte functie omdat dit meerdere keren wordt gebruikt. Sqlite kan niet vanaf meerdere threads gebruikt worden.'
 	connection = sqlite3.connect('quiz.db')

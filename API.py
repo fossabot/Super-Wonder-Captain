@@ -1,5 +1,8 @@
-from tkinter.messagebox import showinfo
-from PIL import Image, ImageTk
+try:
+	from PIL import Image, ImageTk
+except:
+	showinfo("ERROR","pillow is niet (correct) geinstalleerd.")
+	exit()
 import hashlib
 import time
 import json

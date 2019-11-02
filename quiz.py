@@ -1,9 +1,12 @@
 import time
 import threading
-from tkinter.messagebox import showinfo
+try:
+	from tkinter.messagebox import showinfo
+except:
+	print("tkinter is niet (correct) geinstalleerd.")
+	exit()
 from API import bufferVraag,getQuestion
 from scores import highScores,saveScore
-import pdb
 currentQuestion = None
 score = 0
 vragen_gesteld = 0

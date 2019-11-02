@@ -37,8 +37,22 @@ def setImage(label, image):
 	eval(label).image=image
 
 from quiz import *
-from tkinter import *
-import pyglet
+try:
+	from tkinter.messagebox import showinfo
+except:
+	print("tkinter is niet (correct) geinstalleerd.")
+	exit()
+try:
+	from tkinter import *
+except:
+	showinfo("ERROR","Tkinter is niet (correct) geinstalleerd.")
+	exit()
+try:
+	import pyglet
+except:
+	showinfo("ERROR","pyglet is niet (correct) geinstalleerd.")
+	exit()
+
 alltimeScoreBoardLabels=[]
 dailyScoreBoardLabels=[]
 
