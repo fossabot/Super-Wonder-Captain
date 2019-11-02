@@ -1,4 +1,9 @@
 try:
+	from tkinter.messagebox import showinfo
+except:
+	print("tkinter is niet (correct) geinstalleerd.")
+	exit()
+try:
 	from PIL import Image, ImageTk
 except:
 	showinfo("ERROR","pillow is niet (correct) geinstalleerd.")
