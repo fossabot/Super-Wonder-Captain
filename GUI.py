@@ -1,5 +1,4 @@
 def returnGUIVariables():
-	print(dailyScoreBoardLabels)
 	return description,buttons,introLabel,scoreLabel,dailyScoreBoardLabels,alltimeScoreBoardLabels,endLabel,window
 def getName():
 	return nameEntry.get()
@@ -28,11 +27,13 @@ def setBg(button,value):
 def setImage(label, image):
 	eval(label).config(image=image)
 	eval(label).image=image
+
 from quiz import *
 from tkinter import *
 import pyglet
 alltimeScoreBoardLabels=[]
 dailyScoreBoardLabels=[]
+
 
 window = Tk()
 #window.iconbitmap(r'marvelicon.bmp')

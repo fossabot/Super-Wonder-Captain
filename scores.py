@@ -35,5 +35,5 @@ def highScores(onlyToday):
 		startOfDay=0
 	cursor.execute(f'select * from scores where scores.timestamp>={startOfDay} ORDER BY scores.score DESC LIMIT 10;')
 	data = cursor.fetchall()
-	data=map(lambda line: formatDateTime(line,onlyToday),data)
+	data=list(map(lambda line: formatDateTime(line,onlyToday),data))
 	return data

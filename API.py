@@ -56,6 +56,5 @@ def questionInfo():
 def bufferVraag():
 	'zet de nieuwe vraag in de buffer.'
 	questionBuffer.append(questionInfo())
-	print(questionBuffer)
 def getQuestion():
 	return questionBuffer.pop()

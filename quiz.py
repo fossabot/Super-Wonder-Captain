@@ -25,6 +25,7 @@ def switchToIntro():
 def switchToMenu():
 	'gaat naar menu'
 	showFrame('mainMenu')
+
 def switchToScoreboard():
 	'update het scoreboard, en geeft de informatie weer.'
 	spelers=highScores(True)
@@ -132,10 +133,10 @@ def nextQuestion():
 def displayAantalvragen():
 	'geeft het aantal vragen rechtsonder weer'
 	setText('aantalvragen',"Vraag "+str(vragen_gesteld)+"/10")
+
 from GUI import getName,returnGUIVariables,showFrame,setText,setDisabled,setBg,setImage
 if __name__ == '__main__':
 	description,buttons,introLabel,scoreLabel,dailyScoreBoardLabels,alltimeScoreBoardLabels,endLabel,window=returnGUIVariables()
-	print(dailyScoreBoardLabels)
 	initBuffer()
 	switchToMenu()
 	window.mainloop()
