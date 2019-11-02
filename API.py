@@ -7,6 +7,7 @@ import urllib.request
 import urllib.parse
 import re
 import io
+questionBuffer = []
 def sendMarvelRequest(request):
 	'stuurt een aanvraag naar de Marvel API'
 	loginInfo = json.load(open('apikey.json', 'r'))
@@ -52,3 +53,9 @@ def questionInfo():
 	raw_data = urllib.request.urlopen(url).read()
 	img = ImageTk.PhotoImage(Image.open(io.BytesIO(raw_data)))
 	return {'names': names, 'description': description, 'name': name, 'img':img}
+def bufferVraag():
+	'zet de nieuwe vraag in de buffer.'
+	questionBuffer.append(questionInfo())
+	print(questionBuffer)
+def getQuestion():
+	return questionBuffer.pop()
