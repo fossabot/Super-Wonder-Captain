@@ -134,9 +134,8 @@ def displayAantalvragen():
 	'geeft het aantal vragen rechtsonder weer'
 	setText('aantalvragen',"Vraag "+str(vragen_gesteld)+"/10")
 
+from GUI import getName,showFrame,setText,setDisabled,setBg,setImage,Window
 if __name__ == '__main__':
-	from GUI import getName,returnGUIVariables,showFrame,setText,setDisabled,setBg,setImage
-	description,buttons,introLabel,scoreLabel,dailyScoreBoardLabels,alltimeScoreBoardLabels,endLabel,window=returnGUIVariables()
 	initBuffer()
 	switchToMenu()
-	window.mainloop()
+	Window().mainloop()

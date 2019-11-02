@@ -1,5 +1,6 @@
-def returnGUIVariables():
-	return description,buttons,introLabel,scoreLabel,dailyScoreBoardLabels,alltimeScoreBoardLabels,endLabel,window
+def Window():
+	return window
+
 def getName():
 	return nameEntry.get()
 
